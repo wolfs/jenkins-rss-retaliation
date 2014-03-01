@@ -9,9 +9,6 @@ import org.apache.camel.language.XPath
 import org.apache.commons.codec.Charsets
 
 class XmlToJsonConverter implements Processor {
-    void process(@Body String url) throws Exception {
-        System.out.println(url)
-    }
 
     @Override
     void process(Exchange exchange) throws Exception {

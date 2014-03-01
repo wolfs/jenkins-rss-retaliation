@@ -5,12 +5,6 @@ import java.util.List;
 
 public class MissileLauncher {
 
-    private static UsbDevice findDevice() throws UsbException {
-        UsbServices usbServices = UsbHostManager.getUsbServices();
-        UsbHub rootHub = usbServices.getRootUsbHub();
-        return findDevice(rootHub);
-    }
-
     public enum Command {
         LEFT(0x04),
         RIGHT(0x08),
@@ -45,13 +39,16 @@ public class MissileLauncher {
         }
     }
 
-    private UsbDevice device;
+    private final UsbDevice device;
 
     public static MissileLauncher findMissileLauncher() throws Exception {
         UsbDevice launcher = findDevice();
-        MissileLauncher missileLauncher = new MissileLauncher();
-        missileLauncher.device = launcher;
+        MissileLauncher missileLauncher = new MissileLauncher(launcher);
         return missileLauncher;
+    }
+
+    public MissileLauncher(UsbDevice device) {
+        this.device = device;
     }
 
     private void execute(Command command) throws UsbException {
@@ -82,6 +79,12 @@ public class MissileLauncher {
 
     public void ledOff() throws Exception {
         execute(Command.LED_OFF);
+    }
+
+    private static UsbDevice findDevice() throws UsbException {
+        UsbServices usbServices = UsbHostManager.getUsbServices();
+        UsbHub rootHub = usbServices.getRootUsbHub();
+        return findDevice(rootHub);
     }
 
     private static UsbDevice findDevice(UsbDevice device)

@@ -11,7 +11,7 @@ public class RouteTest {
     @Test
     public void testFiltering() throws Exception {
         // create and start Camel
-        CamelContext context = new Bootstrap().createCamelContext();
+        CamelContext context = new CamelApplication(null).createCamelContext();
         context.start();
 
         // Get the mock endpoint
