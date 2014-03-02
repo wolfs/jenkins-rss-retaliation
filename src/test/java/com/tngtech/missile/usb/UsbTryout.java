@@ -5,8 +5,6 @@ import org.junit.Test;
 import javax.usb.*;
 import java.util.List;
 
-import static org.junit.Assert.assertNotNull;
-
 public class UsbTryout {
 
     @Test

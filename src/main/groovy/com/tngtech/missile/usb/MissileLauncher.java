@@ -81,6 +81,11 @@ public class MissileLauncher {
         execute(Command.LED_OFF);
     }
 
+    public void zero() throws Exception {
+        move(Direction.LEFT, 6000);
+        move(Direction.DOWN, 1500);
+    }
+
     private static UsbDevice findDevice() throws UsbException {
         UsbServices usbServices = UsbHostManager.getUsbServices();
         UsbHub rootHub = usbServices.getRootUsbHub();

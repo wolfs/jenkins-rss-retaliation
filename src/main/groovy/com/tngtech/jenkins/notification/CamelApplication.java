@@ -4,21 +4,24 @@ import org.apache.camel.CamelContext;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.impl.DefaultCamelContext;
 import org.apache.camel.impl.SimpleRegistry;
+import org.apache.camel.main.Main;
 import org.apache.camel.processor.idempotent.FileIdempotentRepository;
 import org.joda.time.DateTime;
 
 import java.io.File;
 
-public class CamelApplication {
-    private String rssFeedUrl;
+public class CamelApplication extends Main {
+    private Config config;
 
-    CamelApplication(String rssFeedUrl) {
-        this.rssFeedUrl = rssFeedUrl;
+    CamelApplication(Config config) {
+        this.config = config;
     }
 
+    @Override
     public void run() throws Exception {
         CamelContext camelContext = createCamelContext();
-        camelContext.start();
+        camelContexts.add(camelContext);
+        super.run();
     }
 
     protected CamelContext createCamelContext() throws Exception {
@@ -26,6 +29,9 @@ public class CamelApplication {
         // First we register a blog service in our bean registry
         SimpleRegistry registry = new SimpleRegistry();
         registry.put("xmlToJsonConverter", new XmlToJsonConverter());
+        if (!config.isUsePythonScript()) {
+            registry.put("missileEndpoint", new MissileEndpoint(config.getLocations()));
+        }
 //        registry.put("blogService", new BlogService());
 
         // Then we create the camel context with our bean registry
@@ -56,7 +62,7 @@ public class CamelApplication {
                 // Camel will create an exchange for the seda:feeds.
 //                from("atom:http://localhost:8080/rssAll?splitEntries=true&consumer.delay=1000")
                 String now = DateTime.now().toString("yyyy-MM-dd'T'HH:mm:ss");
-                from("atom:" + rssFeedUrl + "?splitEntries=true&consumer.delay=1000&lastUpdate=" + now)
+                from("atom:" + config.getRssFeedUrl() + "?splitEntries=true&consumer.delay=1000&lastUpdate=" + now)
                         .idempotentConsumer(simple("${body.id}"), FileIdempotentRepository.fileIdempotentRepository(new File("idrepo")))
                         .to("xmlToJsonConverter")
                         .to("log:com.tngtech.jenkins.notification?showAll=true&multiline=true")
@@ -68,10 +74,16 @@ public class CamelApplication {
                 // And the good blogs is moved to a mock queue as this sample is also used for unit testing
                 // this is one of the strengths in Camel that you can also use the mock endpoint for your
                 // unit tests
+                String missileEndpoint;
+                if (config.isUsePythonScript()) {
+                    missileEndpoint = "netty:udp://localhost:22222?textline=true";
+                } else {
+                    missileEndpoint = "missileEndpoint";
+                }
                 from("seda:feeds")
                         .throttle(1).timePeriodMillis(1000)
                         .to("log:com.tngtech.jenkins.notification.udp?showAll=true&multiline=true")
-                        .to("netty:udp://localhost:22222?textline=true");
+                        .to(missileEndpoint);
             }
         };
     }
