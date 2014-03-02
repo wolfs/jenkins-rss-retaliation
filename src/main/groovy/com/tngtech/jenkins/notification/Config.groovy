@@ -4,4 +4,5 @@ class Config {
     String rssFeedUrl
     Map<String, List<List>> locations
     boolean usePythonScript
+    long defaultDelay
 }

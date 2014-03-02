@@ -20,18 +20,26 @@ class MissileEndpoint implements Processor {
         String status = json.build.status
         if (status.toUpperCase().startsWith('FAIL')) {
             def culprits = json.build.culprits
-            def toShootAt = culprits.collect {
-                locations[it]
-            }.findAll()
+            shootAt(culprits)
+        }
+    }
 
-            if (!toShootAt) {
-                toShootAt = locations.unknown
-            }
+    public void shootAt(List<String> culprits) {
+        def toShootAt = culprits.collect {
+            locations[it]
+        }.findAll().toSet()
 
-            def controller = new MissileController(MissileLauncher.findMissileLauncher())
-            toShootAt.each { location ->
-                controller.run(location)
-            }
+        if (!toShootAt) {
+            toShootAt = [locations.unknown]
+        }
+
+        def launcher = MissileLauncher.findMissileLauncher()
+        if (launcher == null) {
+            throw new RuntimeException("Missile Launcher not connected!")
+        }
+        def controller = new MissileController(launcher)
+        toShootAt.each { location ->
+            controller.run(location)
         }
     }
 }

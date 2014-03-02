@@ -1,5 +1,6 @@
 rssFeedUrl="http://localhost:8080/job/property-loader/rssFailed"
 usePythonScript=false
+defaultDelay=1000
 
 locations {
     this.'stefan.wolf'=[

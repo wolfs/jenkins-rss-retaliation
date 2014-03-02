@@ -43,7 +43,10 @@ public class MissileLauncher {
 
     public static MissileLauncher findMissileLauncher() throws Exception {
         UsbDevice launcher = findDevice();
-        MissileLauncher missileLauncher = new MissileLauncher(launcher);
+        MissileLauncher missileLauncher = null;
+        if (launcher != null) {
+            missileLauncher = new MissileLauncher(launcher);
+        }
         return missileLauncher;
     }
 

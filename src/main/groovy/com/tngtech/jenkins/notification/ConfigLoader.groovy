@@ -1,7 +1,5 @@
 package com.tngtech.jenkins.notification
 
-import groovy.transform.CompileStatic
-
 class ConfigLoader {
 
     ConfigLoader() {

@@ -1,19 +1,15 @@
 package com.tngtech.jenkins.notification
 
-import groovy.json.JsonSlurper
 import groovyx.net.http.RESTClient
-import org.apache.camel.Body
 import org.apache.camel.Exchange
 import org.apache.camel.Processor
-import org.apache.camel.language.XPath
-import org.apache.commons.codec.Charsets
 
 class XmlToJsonConverter implements Processor {
 
     @Override
     void process(Exchange exchange) throws Exception {
         def body = exchange.getIn().getBody(String.class)
-        def parsedBody =new XmlSlurper().parseText(body)
+        def parsedBody = new XmlSlurper().parseText(body)
         String link = parsedBody.link.@href
         def client = new RESTClient(link)
         def resp = client.get(path: 'api/json', queryString: 'tree=result,culprits[fullName,id]')
