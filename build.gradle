@@ -1,9 +1,33 @@
 apply plugin: 'groovy'
 apply plugin: 'idea'
 apply plugin:'application'
+apply plugin:'maven'
+apply plugin: 'maven-publish'
+
 
 mainClassName = "com.tngtech.jenkins.notification.Bootstrap"
 sourceCompatibility = "1.7"
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath 'au.com.ish.gradle:release:2.2.2'
+        classpath 'org.tmatesoft.sqljet:sqljet:1.1.8'
+    }
+}
+
+apply plugin: 'release'
+
+release {
+    failOnSnapshotDependencies = true
+    allowLocalModifications = false
+    releaseDryRun = true
+    scm = 'git'
+}
+version = release.projectVersion
 
 repositories {
       mavenCentral()
@@ -32,4 +56,35 @@ dependencies {
   runtime 'org.slf4j:slf4j-simple:1.6.6'
 
   testCompile group: 'junit', name: 'junit', version: '4.11'
+}
+
+task sourceJar(type: Jar, dependsOn: classes) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            groupId = 'com.tngtech.jenkins.notification.retaliation'
+            artifactId = 'rss-retaliation'
+            from components.java
+
+            artifact sourceJar {
+                classifier "sources"
+            }
+            artifact javadocJar {
+                classifier "javadoc"
+            }
+
+            artifact distZip {
+                classifier "zip"
+            }
+        }
+    }
 }
