@@ -23,8 +23,8 @@ apply plugin: 'release'
 
 release {
     failOnSnapshotDependencies = true
-    allowLocalModifications = false
-    releaseDryRun = true
+    allowLocalModifications = true
+    releaseDryRun = false
     scm = 'git'
 }
 version = release.projectVersion
@@ -72,7 +72,7 @@ publishing {
     publications {
         mavenJava(MavenPublication) {
             groupId = 'com.tngtech.jenkins.notification.retaliation'
-            artifactId = 'rss-retaliation'
+            artifactId = 'jenkins-rss-retaliation'
             from components.java
 
             artifact sourceJar {
@@ -83,8 +83,16 @@ publishing {
             }
 
             artifact distZip {
-                classifier "zip"
+                classifier "dist"
             }
         }
     }
-}
+    repositories {
+        maven {
+            url 'https://api.bintray.com/maven/wolfs/maven/jenkins-rss-retaliation'
+            credentials {
+                username = 'wolfs'
+                password = '11c37594c5b6caddf1591f8d1a4df7d15d4bf3853fb096420f8a4dab38d95c0a'
+            }
+        }
+    }}

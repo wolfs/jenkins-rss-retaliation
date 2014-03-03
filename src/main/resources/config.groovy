@@ -1,9 +1,9 @@
-rssFeedUrl="http://localhost:8080/job/property-loader/rssFailed"
+rssFeedUrl="http://localhost:8080/rssFailed"
 usePythonScript=false
-defaultDelay=1000
+defaultDelay=60000
 
 locations {
-    this.'stefan.wolf'=[
+    someUser=[
             ["zero"],
             ["right", 2000],
             ["up", 600],
