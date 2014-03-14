@@ -1,6 +1,7 @@
 rssFeedUrl="http://localhost:8080/rssFailed"
 defaultDelay=1000
-endpoints=['missile']
+endpoints=['missile', 'tts']
+
 
 locations {
     someUser=[

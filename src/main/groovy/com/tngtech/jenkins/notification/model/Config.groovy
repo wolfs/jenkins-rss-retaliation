@@ -5,4 +5,6 @@ class Config {
     Map<String, List<List>> locations
     long defaultDelay
     List<String> endpoints
+
+    TtsConfig tts = new TtsConfig()
 }
