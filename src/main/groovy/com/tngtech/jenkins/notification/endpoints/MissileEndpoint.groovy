@@ -1,12 +1,12 @@
-package com.tngtech.jenkins.notification
+package com.tngtech.jenkins.notification.endpoints
 
+import com.tngtech.jenkins.notification.model.BuildInfo
 import com.tngtech.missile.usb.MissileController
 import com.tngtech.missile.usb.MissileLauncher
-import groovy.json.JsonSlurper
-import org.apache.camel.Exchange
-import org.apache.camel.Processor
+import org.apache.camel.Body
+import org.apache.camel.Handler
 
-class MissileEndpoint implements Processor {
+class MissileEndpoint implements FeedbackEndpoint {
 
     private Map<String, List<List>> locations
 
@@ -14,13 +14,12 @@ class MissileEndpoint implements Processor {
         this.locations = locations
     }
 
-    @Override
-    void process(Exchange exchange) throws Exception {
-        def json = new JsonSlurper().parseText(exchange.getIn().getBody(String.class))
-        String status = json.build.status
+    @Handler
+    void process(@Body BuildInfo buildInfo) throws Exception {
+        String status = buildInfo.status
         if (status.toUpperCase().startsWith('FAIL')) {
-            def culprits = json.build.culprits
-            shootAt(culprits)
+            def culprits = buildInfo.culprits
+            shootAt(culprits.collect { it.id })
         }
     }
 
@@ -36,10 +35,11 @@ class MissileEndpoint implements Processor {
         def launcher = MissileLauncher.findMissileLauncher()
         if (launcher == null) {
             throw new RuntimeException("Missile Launcher not connected!")
-        }
-        def controller = new MissileController(launcher)
-        toShootAt.each { location ->
-            controller.run(location)
+        } else {
+            def controller = new MissileController(launcher)
+            toShootAt.each { location ->
+                controller.run(location)
+            }
         }
     }
 }

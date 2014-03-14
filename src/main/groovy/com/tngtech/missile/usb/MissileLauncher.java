@@ -1,7 +1,9 @@
 package com.tngtech.missile.usb;
 
 import javax.usb.*;
+import java.util.EnumSet;
 import java.util.List;
+import java.util.Set;
 
 public class MissileLauncher {
 
@@ -22,22 +24,15 @@ public class MissileLauncher {
         }
 
         private Command(int type, int command) {
-            this.bytes = new byte[] { (byte) type, (byte) command, 0x00,0x00,0x00,0x00,0x00,0x00 };
+            this.bytes = new byte[]{(byte) type, (byte) command, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
         }
     }
 
-    public enum Direction {
-        LEFT(Command.LEFT),
-        RIGHT(Command.RIGHT),
-        UP(Command.UP),
-        DOWN(Command.DOWN);
-
-        public final Command command;
-
-        private Direction(Command command) {
-            this.command = command;
-        }
-    }
+    public static final Set<Command> directionCommands = EnumSet.of(
+            Command.LEFT,
+            Command.RIGHT,
+            Command.UP,
+            Command.DOWN);
 
     private final UsbDevice device;
 
@@ -54,7 +49,7 @@ public class MissileLauncher {
         this.device = device;
     }
 
-    private void execute(Command command) throws UsbException {
+    public void execute(Command command) throws UsbException {
         UsbControlIrp irp = device.createUsbControlIrp(
                 (byte) (UsbConst.REQUESTTYPE_TYPE_CLASS | UsbConst.REQUESTTYPE_RECIPIENT_INTERFACE),
                 UsbConst.REQUEST_SET_CONFIGURATION,
@@ -65,49 +60,24 @@ public class MissileLauncher {
 
     }
 
-    public void move(Direction direction, long millis) throws Exception {
-        execute(direction.command);
-        Thread.sleep(millis);
-        execute(Command.STOP);
-    }
-
-    public void fire() throws Exception {
-        execute(Command.FIRE);
-        Thread.sleep(4500);
-    }
-
-    public void ledOn() throws Exception {
-        execute(Command.LED_ON);
-    }
-
-    public void ledOff() throws Exception {
-        execute(Command.LED_OFF);
-    }
-
-    public void zero() throws Exception {
-        move(Direction.LEFT, 6000);
-        move(Direction.DOWN, 1500);
-    }
-
     private static UsbDevice findDevice() throws UsbException {
         UsbServices usbServices = UsbHostManager.getUsbServices();
         UsbHub rootHub = usbServices.getRootUsbHub();
         return findDevice(rootHub);
     }
 
-    private static UsbDevice findDevice(UsbDevice device)
-    {
+    private static UsbDevice findDevice(UsbDevice device) {
         UsbDeviceDescriptor desc = device.getUsbDeviceDescriptor();
 
         if ((desc.idVendor() & 0xffff) == 0x2123 && (desc.idProduct() & 0xffff) == 0x1010) {
             return device;
         }
 
-        if (device.isUsbHub())
-        {
+        if (device.isUsbHub()) {
             UsbHub hub = (UsbHub) device;
-            for (UsbDevice child : (List<UsbDevice>) hub.getAttachedUsbDevices())
-            {
+            @SuppressWarnings("unchecked")
+            List<UsbDevice> attachedUsbDevices = (List<UsbDevice>) hub.getAttachedUsbDevices();
+            for (UsbDevice child : attachedUsbDevices) {
                 UsbDevice missileLauncher = findDevice(child);
                 if (missileLauncher != null) {
                     return missileLauncher;

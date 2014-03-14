@@ -1,5 +1,6 @@
 package com.tngtech.missile.usb;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import javax.usb.*;
@@ -8,6 +9,7 @@ import java.util.List;
 public class UsbTryout {
 
     @Test
+    @Ignore
     public void findDevices() throws UsbException {
         UsbServices usbServices = UsbHostManager.getUsbServices();
         UsbHub rootHub = usbServices.getRootUsbHub();
@@ -15,12 +17,12 @@ public class UsbTryout {
     }
 
     @Test
-//    @Ignore
+    @Ignore
     public void missileLauncher_can_be_controlled_is_found() throws Exception {
-        MissileLauncher missileLauncher = MissileLauncher.findMissileLauncher();
+        MissileController missileLauncher = new MissileController(MissileLauncher.findMissileLauncher());
 
         missileLauncher.ledOn();
-        for (MissileLauncher.Direction direction : MissileLauncher.Direction.values()) {
+        for (MissileLauncher.Command direction : MissileLauncher.directionCommands) {
             missileLauncher.move(direction, 500);
         }
         missileLauncher.fire();

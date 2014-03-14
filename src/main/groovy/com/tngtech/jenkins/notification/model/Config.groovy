@@ -1,8 +1,8 @@
-package com.tngtech.jenkins.notification
+package com.tngtech.jenkins.notification.model
 
 class Config {
     String rssFeedUrl
     Map<String, List<List>> locations
-    boolean usePythonScript
     long defaultDelay
+    List<String> endpoints
 }

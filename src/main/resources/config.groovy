@@ -1,6 +1,6 @@
 rssFeedUrl="http://localhost:8080/rssFailed"
-usePythonScript=false
-defaultDelay=60000
+defaultDelay=1000
+endpoints=['missile']
 
 locations {
     someUser=[

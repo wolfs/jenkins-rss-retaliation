@@ -1,5 +1,8 @@
 package com.tngtech.jenkins.notification;
 
+import com.tngtech.jenkins.notification.endpoints.MissileEndpoint;
+import com.tngtech.jenkins.notification.model.Config;
+import com.tngtech.missile.usb.MissileController;
 import com.tngtech.missile.usb.MissileLauncher;
 
 import java.util.ArrayList;
@@ -14,11 +17,11 @@ public class Bootstrap {
         String command = args[0];
         if (args.length == 1) {
             if ("fire".equals(command)) {
-                MissileLauncher.findMissileLauncher().fire();
+                getMissileController().fire();
             } else if ("ledOn".equals(command)) {
-                MissileLauncher.findMissileLauncher().ledOn();
+                getMissileController().ledOn();
             } else if ("ledOff".equals(command)) {
-                MissileLauncher.findMissileLauncher().ledOff();
+                getMissileController().ledOff();
             } else if ("stalk".equals(command)) {
                 new CamelApplication(config).run();
             }
@@ -32,11 +35,15 @@ public class Bootstrap {
                 }
                 missileEndpoint.shootAt(culprits);
             } else {
-                MissileLauncher.Direction direction =
-                        MissileLauncher.Direction.valueOf(args[0].toUpperCase());
+                MissileLauncher.Command direction =
+                        MissileLauncher.Command.valueOf(args[0].toUpperCase());
                 int time = Integer.valueOf(args[1]);
-                MissileLauncher.findMissileLauncher().move(direction, time);
+                getMissileController().move(direction, time);
             }
         }
+    }
+
+    private static MissileController getMissileController() throws Exception {
+        return new MissileController(MissileLauncher.findMissileLauncher());
     }
 }

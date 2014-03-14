@@ -1,5 +1,7 @@
 package com.tngtech.jenkins.notification
 
+import com.tngtech.jenkins.notification.model.Config
+
 class ConfigLoader {
 
     ConfigLoader() {
