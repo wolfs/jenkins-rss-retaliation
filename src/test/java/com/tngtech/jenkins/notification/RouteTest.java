@@ -2,13 +2,12 @@ package com.tngtech.jenkins.notification;
 
 import org.apache.camel.CamelContext;
 import org.apache.camel.component.mock.MockEndpoint;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class RouteTest {
-    /**
-     * This is the actual junit test method that does the assertion that our routes is working as expected
-     */
     @Test
+    @Ignore("Currently no tests for the route itself")
     public void testFiltering() throws Exception {
         // create and start Camel
         CamelContext context = new CamelApplication(null).createCamelContext();
