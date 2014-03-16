@@ -2,9 +2,10 @@ package com.tngtech.jenkins.notification.model
 
 class Config {
     String rssFeedUrl
-    Map<String, List<List>> locations
-    long defaultDelay
-    List<String> endpoints
+    long pollInterval = 60000
+    List<String> feedbackDevices
+    boolean feedbackInParallel = false
 
     TtsConfig tts = new TtsConfig()
+    MissileConfig missile = new MissileConfig()
 }

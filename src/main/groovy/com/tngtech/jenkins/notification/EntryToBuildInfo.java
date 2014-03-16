@@ -16,7 +16,9 @@ public class EntryToBuildInfo {
     @Handler
     public BuildInfo process(@Body Entry entry) throws Exception {
         IRI link = entry.getAlternateLink().getHref();
-        return provider.getBuildInfo(link);
+        BuildInfo buildInfo = provider.getBuildInfo(link);
+        buildInfo.setFeedMessage(entry.getTitle());
+        return buildInfo;
     }
 
 }

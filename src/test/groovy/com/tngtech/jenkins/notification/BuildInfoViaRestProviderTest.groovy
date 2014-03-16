@@ -1,6 +1,7 @@
 package com.tngtech.jenkins.notification
 
 import org.apache.abdera.i18n.iri.IRI
+import spock.lang.Ignore
 import spock.lang.Specification
 
 public class BuildInfoViaRestProviderTest extends Specification {
@@ -13,6 +14,7 @@ public class BuildInfoViaRestProviderTest extends Specification {
         buildInfoViaRestProvider.findBuildId('http://localhost:8080/job/downstream/13/') == ['http://localhost:8080/job/downstream/', 13]
     }
 
+    @Ignore
     def 'Build info is found'() {
         when:
         BuildInfoViaRestProvider buildInfoViaRestProvider = new BuildInfoViaRestProvider()

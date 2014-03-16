@@ -1,6 +1,7 @@
 package com.tngtech.jenkins.notification.endpoints
 
 import com.tngtech.jenkins.notification.model.BuildInfo
+import com.tngtech.jenkins.notification.model.MissileConfig
 import com.tngtech.missile.usb.MissileController
 import com.tngtech.missile.usb.MissileLauncher
 import org.apache.camel.Body
@@ -8,10 +9,10 @@ import org.apache.camel.Handler
 
 class MissileEndpoint implements FeedbackEndpoint {
 
-    private Map<String, List<List>> locations
+    private MissileConfig config
 
-    MissileEndpoint(Map<String, List<List>> locations) {
-        this.locations = locations
+    MissileEndpoint(MissileConfig config) {
+        this.config = config
     }
 
     @Handler
@@ -24,6 +25,7 @@ class MissileEndpoint implements FeedbackEndpoint {
     }
 
     public void shootAt(List<String> culprits) {
+        def locations = config.locations
         def toShootAt = culprits.collect {
             locations[it]
         }.findAll().toSet()
