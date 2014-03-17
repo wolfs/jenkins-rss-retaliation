@@ -14,7 +14,9 @@ class ConfigLoader {
 
         URL configUrl
 
-        if (confFile.exists()) {
+        if (System.properties.containsKey("config")) {
+            configUrl = new File(System.getProperty("config")).toURI().toURL()
+        } else if (confFile.exists()) {
             configUrl = confFile.toURI().toURL();
         } else {
             configUrl = getClass().getResource('/config.groovy');
