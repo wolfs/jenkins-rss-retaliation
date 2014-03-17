@@ -1,6 +1,7 @@
 package com.tngtech.jenkins.notification;
 
 import com.tngtech.jenkins.notification.endpoints.MissileEndpoint;
+import com.tngtech.jenkins.notification.endpoints.TtsEndpoint;
 import com.tngtech.jenkins.notification.model.Config;
 import com.tngtech.missile.usb.MissileController;
 import com.tngtech.missile.usb.MissileLauncher;
@@ -28,12 +29,19 @@ public class Bootstrap {
         }
         if (args.length >= 2) {
             if ("shootAt".equals(command)) {
-                MissileEndpoint missileEndpoint = new MissileEndpoint(config.getLocations());
+                MissileEndpoint missileEndpoint = new MissileEndpoint(config.getMissile());
                 List<String> culprits = new ArrayList<>();
                 for (int i = 1; i < args.length; i++) {
                     culprits.add(args[i]);
                 }
                 missileEndpoint.shootAt(culprits);
+            } else if ("say".equals(command)) {
+                TtsEndpoint ttsEndpoint = new TtsEndpoint(config.getTts());
+                String text = "";
+                for (int i = 1; i < args.length; i++) {
+                    text = text + " " + args[i];
+                }
+                ttsEndpoint.say(text);
             } else {
                 MissileLauncher.Command direction =
                         MissileLauncher.Command.valueOf(args[0].toUpperCase());

@@ -1,7 +1,6 @@
 apply plugin: 'groovy'
 apply plugin: 'idea'
-apply plugin:'application'
-apply plugin:'maven'
+apply plugin: 'application'
 apply plugin: 'maven-publish'
 
 
@@ -17,8 +16,9 @@ buildscript {
     }
 
     dependencies {
-        classpath 'au.com.ish.gradle:release:2.2.2'
-        classpath 'org.tmatesoft.sqljet:sqljet:1.1.8'
+        classpath('au.com.ish.gradle:release:2.2.2') {
+            exclude group: 'org.tmatesoft.svnkit'
+        }
     }
 }
 
@@ -55,7 +55,7 @@ dependencies {
     compile group: 'org.codehaus.groovy', name: 'groovy', version: groovyVersion
     compile group: 'org.codehaus.groovy', name: 'groovy-json', version: groovyVersion
     compile group: 'org.codehaus.groovy', name: 'groovy-xml', version: groovyVersion
-    compile group: 'org.codehaus.groovy.modules.http-builder', name :'http-builder', version: '0.7.1'
+    compile group: 'org.codehaus.groovy.modules.http-builder', name: 'http-builder', version: '0.7.1'
     compile group: 'de.ailis.usb4java', version: '1.0.0', name: 'usb4java'
     compile group: 'org.apache.camel', name: 'camel-core', version: camelVersion
     compile group: 'org.apache.camel', name: 'camel-atom', version: camelVersion
@@ -64,8 +64,10 @@ dependencies {
     runtime 'org.slf4j:slf4j-simple:1.6.6'
 
     testCompile group: 'junit', name: 'junit', version: '4.11'
-    testCompile group: 'org.spockframework', name: 'spock-core', version:'0.7-groovy-2.0'
+    testCompile group: 'org.spockframework', name: 'spock-core', version: '0.7-groovy-2.0'
     testCompile group: 'cglib', name: 'cglib-nodep', version: '3.1'
+    testCompile group: 'org.apache.camel', name: 'camel-test', version: camelVersion
+    testCompile group: 'org.mockito', name: 'mockito-core', version: '1.9.5'
 }
 
 task sourceJar(type: Jar, dependsOn: classes) {
@@ -102,7 +104,12 @@ publishing {
             url 'https://api.bintray.com/maven/wolfs/maven/jenkins-rss-retaliation'
             credentials {
                 username = 'wolfs'
-                password = '11c37594c5b6caddf1591f8d1a4df7d15d4bf3853fb096420f8a4dab38d95c0a'
+                password = hasProperty('bintrayApiKey') ? bintrayApiKey : ''
             }
         }
+<<<<<<< HEAD
     }}
+=======
+    }
+}
+>>>>>>> 139e0f80414bbffc5937409d885b7e31db71bad7

@@ -13,7 +13,7 @@ class ConfigLoaderTest {
     @Test
     void config_is_loaded() {
         Config config = new ConfigLoader().load();
-        def someUser = config.locations.someUser
+        def someUser = config.missile.locations.someUser
         assertNotNull(someUser)
         assertEquals('The build some is broken!', config.tts.message.call(new BuildInfo(project: new Project(displayName: 'some'))).toString())
     }

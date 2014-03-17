@@ -14,7 +14,7 @@ class BuildInfoViaRestProvider {
         String url = linkToBuild.toASCIIString()
         def (baseUrl, buildId) = findBuildId(url)
 
-        def buildData = queryRestApiForJson(url, 'tree=result,culprits[fullName,id]')
+        def buildData = queryRestApiForJson(url, 'tree=number,result,culprits[fullName,id]')
 
         def culprits = buildData.culprits.collect { culprit ->
             new Culprit(id: culprit.id, fullName: culprit.fullName)
@@ -27,7 +27,9 @@ class BuildInfoViaRestProvider {
         return new BuildInfo(
                 culprits: culprits,
                 status: result,
-                project: project)
+                project: project,
+                buildNumber: buildData.number
+        )
     }
 
     def queryRestApiForJson(String url, String queryString) {
