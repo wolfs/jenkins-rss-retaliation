@@ -104,9 +104,5 @@ publishing {
                 password = hasProperty('bintrayApiKey') ? bintrayApiKey : ''
             }
         }
-<<<<<<< HEAD
-    }}
-=======
     }
 }
->>>>>>> 139e0f80414bbffc5937409d885b7e31db71bad7

@@ -1,6 +1,7 @@
 package com.tngtech.jenkins.notification.endpoints
 
 import com.tngtech.jenkins.notification.model.BuildInfo
+import com.tngtech.jenkins.notification.model.TrafficLightConfig
 import org.apache.camel.Body
 
 import java.nio.file.Paths
@@ -10,12 +11,10 @@ import static java.nio.file.Files.exists
 class TrafficLightEndpoint implements FeedbackEndpoint {
 
     private String binaryPath;
-    private List<String> projectFilter;
     private String lastStatus;
 
-    public TrafficLightEndpoint(String binaryPath, List<String> projectFilter) {
-        this.binaryPath = binaryPath;
-        this.projectFilter = projectFilter
+    public TrafficLightEndpoint(TrafficLightConfig trafficLightConfig) {
+        this.binaryPath = trafficLightConfig.clewareUsbSwitchBinary;
         setTo("G")
     }
 
