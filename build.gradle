@@ -10,9 +10,6 @@ sourceCompatibility = "1.7"
 buildscript {
     repositories {
         mavenCentral()
-        maven {
-            url 'http://maven.tmatesoft.com/content/repositories/releases/'
-        }
     }
 
     dependencies {
