@@ -1,6 +1,5 @@
 package com.tngtech.jenkins.notification.model
 
-import com.tngtech.jenkins.notification.model.Culprit
 import groovy.transform.Canonical
 
 @Canonical
