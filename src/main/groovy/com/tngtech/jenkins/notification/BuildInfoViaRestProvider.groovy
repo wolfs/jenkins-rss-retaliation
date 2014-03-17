@@ -45,6 +45,4 @@ class BuildInfoViaRestProvider {
         String baseUrl = match[1]
         return [baseUrl, buildId]
     }
-
-
 }
