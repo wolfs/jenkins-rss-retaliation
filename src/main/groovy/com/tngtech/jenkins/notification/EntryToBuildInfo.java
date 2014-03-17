@@ -18,5 +18,4 @@ public class EntryToBuildInfo {
         IRI link = entry.getAlternateLink().getHref();
         return provider.getBuildInfo(link);
     }
-
 }
