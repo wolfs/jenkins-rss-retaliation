@@ -5,6 +5,8 @@ class Config {
     Map<String, List<List>> locations
     long defaultDelay
     List<String> endpoints
+    String clewareUsbSwitchBinary
+    List<String> projectNameFilter
 
     TtsConfig tts = new TtsConfig()
 }
