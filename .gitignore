@@ -10,3 +10,5 @@ build/
 *.ipr
 *.iml
 *.iws
+
+idrepo
