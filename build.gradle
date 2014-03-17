@@ -13,8 +13,9 @@ buildscript {
     }
 
     dependencies {
-        classpath 'au.com.ish.gradle:release:2.2.2'
-        classpath 'org.tmatesoft.sqljet:sqljet:1.1.8'
+        classpath('au.com.ish.gradle:release:2.2.2') {
+            exclude group: 'org.tmatesoft.svnkit'
+        }
     }
 }
 
