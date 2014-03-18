@@ -10,40 +10,59 @@ import static java.nio.file.Files.exists
 
 class TrafficLightEndpoint implements FeedbackEndpoint {
 
+    enum Status {
+        STABLE("G"), UNSTABLE("Y"), FAIL("R")
+
+        private String command;
+
+        private Status(String command) {
+            this.command = command;
+        }
+    }
     private String binaryPath;
     private String lastStatus;
+    private Map<String, Status> projectStatus = new HashMap<>()
 
     public TrafficLightEndpoint(TrafficLightConfig trafficLightConfig) {
         this.binaryPath = trafficLightConfig.clewareUsbSwitchBinary;
-        setTo("G")
     }
 
     @Override
     void process(@Body BuildInfo buildInfo) throws Exception {
         def status = buildInfo.status.toUpperCase();
-        String targetColor;
-        if (status.startsWith("FAIL")) {
-            if (lastStatus != null && ! lastStatus.equals(status)) {
-                setTo("-p 1 1 1")
+
+        for (Status buildStatus : Status.values()) {
+            if (status.startsWith(buildStatus.name())) {
+                projectStatus.put(buildInfo.project.name, buildStatus);
             }
-            targetColor = "R";
-        } else if (status.startsWith("UNSTABLE")) {
-            targetColor = "Y";
-        } else {
-            targetColor = "G"
         }
 
-        setTo(targetColor);
-        lastStatus = status;
+
+        if (status.startsWith("FAIL")) {
+            projectStatus.put(buildInfo.project.name, Status.FAIL);
+        }
+
+        updateLight()
     }
 
-    private void setTo(String targetColor) {
+    private void updateLight() {
+        Status highest = Status.STABLE
+        for (Status status : projectStatus.values()) {
+            if (status.ordinal() > highest.ordinal()) {
+                highest = status;
+            }
+        }
+
+        setTo(highest)
+    }
+
+    private void setTo(Status status) {
         if (binaryPath == null) return;
 
         def binary = Paths.get(binaryPath)
         if (! exists(binary)) {
             return;
         }
-        new ProcessBuilder().command(binary.toString(), targetColor).start()
+        new ProcessBuilder().command(binary.toString(), status.command).start()
     }
 }
