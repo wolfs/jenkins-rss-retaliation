@@ -8,4 +8,5 @@ class Config {
 
     TtsConfig tts = new TtsConfig()
     MissileConfig missile = new MissileConfig()
+    TrafficLightConfig trafficLight = new TrafficLightConfig()
 }

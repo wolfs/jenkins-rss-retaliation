@@ -1,6 +1,7 @@
 package com.tngtech.jenkins.notification;
 
 import com.tngtech.jenkins.notification.endpoints.MissileEndpoint;
+import com.tngtech.jenkins.notification.endpoints.TrafficLightEndpoint;
 import com.tngtech.jenkins.notification.endpoints.TtsEndpoint;
 import com.tngtech.jenkins.notification.model.Config;
 import org.apache.camel.CamelContext;
@@ -19,8 +20,10 @@ import java.util.List;
 
 public class CamelApplication extends Main {
     public static final String ENTRY_TO_BUILD_INFO_BEAN = "entryToBuildInfo";
+
     public static final String MISSILE_ENDPOINT = "missileEndpoint";
     public static final String TTS_ENDPOINT = "ttsEndpoint";
+    public static final String TRAFFIC_LIGHT_ENDPOINT = "trafficLightEndpoint";
     private Config config;
 
     CamelApplication(Config config) {
@@ -40,6 +43,7 @@ public class CamelApplication extends Main {
         registry.put(ENTRY_TO_BUILD_INFO_BEAN, new EntryToBuildInfo(new BuildInfoViaRestProvider()));
         registry.put(MISSILE_ENDPOINT, new MissileEndpoint(config.getMissile()));
         registry.put(TTS_ENDPOINT, new TtsEndpoint(config.getTts()));
+        registry.put(TRAFFIC_LIGHT_ENDPOINT, new TrafficLightEndpoint(config.getTrafficLight()));
 
         context = new DefaultCamelContext(registry);
 

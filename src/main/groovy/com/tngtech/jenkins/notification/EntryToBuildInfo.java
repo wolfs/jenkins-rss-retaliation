@@ -20,5 +20,4 @@ public class EntryToBuildInfo {
         buildInfo.setFeedMessage(entry.getTitle());
         return buildInfo;
     }
-
 }
