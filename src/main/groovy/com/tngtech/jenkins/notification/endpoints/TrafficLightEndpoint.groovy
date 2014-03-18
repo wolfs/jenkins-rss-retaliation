@@ -20,7 +20,6 @@ class TrafficLightEndpoint implements FeedbackEndpoint {
         }
     }
     private String binaryPath;
-    private String lastStatus;
     private Map<String, Status> projectStatus = new HashMap<>()
 
     public TrafficLightEndpoint(TrafficLightConfig trafficLightConfig) {

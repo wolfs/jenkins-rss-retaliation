@@ -6,6 +6,7 @@ Currently supported are:
 
 * [Dream Cheeky Missile Launcher](http://www.dreamcheeky.com/thunder-missile-launcher)
 * Google Text-To-Speech API
+* [Cleware Traffic Light](http://www.cleware-shop.de/epages/63698188.sf/de_DE/?ObjectPath=/Shops/63698188/Products/41/SubProducts/41-1)
 
 In order to use the latest released version, download the application zip from [bintray](https://bintray.com/wolfs/maven/jenkins-rss-retaliation). Then create a
 configuration file config.groovy in the conf directory in the unzipped application directory.
@@ -59,5 +60,9 @@ config.groovy:
         message = { info -> // Closure which yields the text to be spoken
             "The build ${info.project.displayName} is broken!"
         }
+    }
+
+    trafficLight {
+        clewareUsbSwitchBinary='/some/path/to/binary'
     }
 

@@ -13,7 +13,7 @@ class TtsEndpointTest extends Specification {
     def 'Output is read from configuration'() {
         when:
         def tts = new TtsEndpoint(new TtsConfig())
-        tts.process(new BuildInfo(new Project(displayName: 'some-project')))
+        tts.process(new BuildInfo(project: new Project(displayName: 'some-project')))
 
         then:
         println 'You heard a sound'

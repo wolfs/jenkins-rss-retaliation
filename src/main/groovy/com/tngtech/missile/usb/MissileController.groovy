@@ -15,7 +15,7 @@ class MissileController {
             String method = command.head()
             def args = command.tail()
             if (MissileLauncher.directionCommands*.toString().contains(method.toUpperCase())) {
-                this.move(Command.valueOf(method.toUpperCase()), args[0])
+                this.move(Command.valueOf(method.toUpperCase()), Long.valueOf(args[0]))
             } else {
                 this."$method"(*args)
             }
