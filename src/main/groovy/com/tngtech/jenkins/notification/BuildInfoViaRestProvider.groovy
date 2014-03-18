@@ -33,7 +33,6 @@ class BuildInfoViaRestProvider {
     }
 
     def queryRestApiForJson(String url, String queryString) {
-        println url
         RESTClient client = new RESTClient(url)
         def resp = client.get(path: 'api/json', queryString: queryString)
         return resp.responseData
