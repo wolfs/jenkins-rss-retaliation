@@ -45,14 +45,12 @@ public class CamelApplication extends Main {
         registry.put(TTS_ENDPOINT, new TtsEndpoint(config.getTts()));
         registry.put(TRAFFIC_LIGHT_ENDPOINT, new TrafficLightEndpoint(config.getTrafficLight()));
 
-        context = new DefaultCamelContext(registry);
+        CamelContext context = new DefaultCamelContext(registry);
 
         context.addRoutes(createRoutes());
 
         return context;
     }
-
-    private CamelContext context;
 
     protected RouteBuilder createRoutes() throws Exception {
         return new RouteBuilder() {
@@ -76,7 +74,7 @@ public class CamelApplication extends Main {
                 if (config.isFeedbackInParallel()) {
                     multicast.parallelProcessing();
                 }
-                multicast.to(endpoints.toArray(new String[] {}));
+                multicast.to(endpoints.toArray(new String[endpoints.size()]));
             }
         };
     }

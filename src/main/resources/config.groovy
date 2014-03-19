@@ -32,3 +32,7 @@ tts {
         "The build ${info.project.displayName} is broken!"
     }
 }
+
+trafficLight {
+    clewareUsbSwitchBinary='/some/path/to/binary'
+}

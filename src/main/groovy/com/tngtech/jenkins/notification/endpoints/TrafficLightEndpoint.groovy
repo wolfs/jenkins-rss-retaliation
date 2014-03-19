@@ -19,6 +19,7 @@ class TrafficLightEndpoint implements FeedbackEndpoint {
             this.command = command;
         }
     }
+
     private String binaryPath;
     private Status trafficLightStatus;
     private Map<String, Status> projectStatus = new HashMap<>()

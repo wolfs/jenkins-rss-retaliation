@@ -22,6 +22,7 @@ import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
@@ -61,7 +62,7 @@ public class CamelApplicationTest extends CamelTestSupport {
     @Override
     protected void doPreSetup() throws Exception {
         config = new Config();
-        ArrayList endpoints = new ArrayList<>();
+        List<String> endpoints = new ArrayList<>();
         endpoints.add("missile");
         endpoints.add("some");
         config.setFeedbackDevices(endpoints);
