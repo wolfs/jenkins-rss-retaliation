@@ -11,7 +11,7 @@ import static java.nio.file.Files.exists
 class TrafficLightEndpoint implements FeedbackEndpoint {
 
     enum Status {
-        STABLE("G"), UNSTABLE("Y"), FAIL("R")
+        SUCCESS("G"), UNSTABLE("Y"), FAIL("R")
 
         private String command;
 
@@ -20,11 +20,13 @@ class TrafficLightEndpoint implements FeedbackEndpoint {
         }
     }
     private String binaryPath;
-    private String lastStatus;
+    private Status trafficLightStatus;
     private Map<String, Status> projectStatus = new HashMap<>()
 
     public TrafficLightEndpoint(TrafficLightConfig trafficLightConfig) {
-        this.binaryPath = trafficLightConfig.clewareUsbSwitchBinary;
+        if (trafficLightConfig != null) {
+            this.binaryPath = trafficLightConfig.clewareUsbSwitchBinary;
+        }
     }
 
     @Override
@@ -37,16 +39,11 @@ class TrafficLightEndpoint implements FeedbackEndpoint {
             }
         }
 
-
-        if (status.startsWith("FAIL")) {
-            projectStatus.put(buildInfo.project.name, Status.FAIL);
-        }
-
         updateLight()
     }
 
     private void updateLight() {
-        Status highest = Status.STABLE
+        Status highest = Status.SUCCESS
         for (Status status : projectStatus.values()) {
             if (status.ordinal() > highest.ordinal()) {
                 highest = status;
@@ -57,6 +54,7 @@ class TrafficLightEndpoint implements FeedbackEndpoint {
     }
 
     private void setTo(Status status) {
+        trafficLightStatus = status;
         if (binaryPath == null) return;
 
         def binary = Paths.get(binaryPath)
@@ -64,5 +62,9 @@ class TrafficLightEndpoint implements FeedbackEndpoint {
             return;
         }
         new ProcessBuilder().command(binary.toString(), status.command).start()
+    }
+
+    Status getTrafficLightStatus() {
+        return trafficLightStatus
     }
 }
