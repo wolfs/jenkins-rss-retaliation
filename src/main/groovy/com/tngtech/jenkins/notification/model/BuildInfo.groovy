@@ -9,4 +9,5 @@ class BuildInfo {
     String status
     String buildNumber
     List<Culprit> culprits
+    boolean isInitialParsing
 }

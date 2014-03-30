@@ -2,13 +2,12 @@ package com.tngtech.jenkins.notification.endpoints
 
 import com.tngtech.jenkins.notification.model.BuildInfo
 import com.tngtech.jenkins.notification.model.TrafficLightConfig
-import org.apache.camel.Body
 
 import java.nio.file.Paths
 
 import static java.nio.file.Files.exists
 
-class TrafficLightEndpoint implements FeedbackEndpoint {
+class TrafficLightEndpoint extends BaseEndpoint {
 
     enum Status {
         SUCCESS("G"), UNSTABLE("Y"), FAIL("R")
@@ -31,19 +30,23 @@ class TrafficLightEndpoint implements FeedbackEndpoint {
     }
 
     @Override
-    void process(@Body BuildInfo buildInfo) throws Exception {
-        def status = buildInfo.status.toUpperCase();
+    void processUpdate(BuildInfo buildInfo) throws Exception {
+        updateLightStatus(buildInfo);
+        setTo(trafficLightStatus);
+    }
 
+    @Override
+    void processInitial(BuildInfo buildInfo) throws Exception {
+        updateLightStatus(buildInfo);
+    }
+
+    private void updateLightStatus(BuildInfo buildInfo) {
         for (Status buildStatus : Status.values()) {
-            if (status.startsWith(buildStatus.name())) {
+            if (buildInfo.status.startsWith(buildStatus.name())) {
                 projectStatus.put(buildInfo.project.name, buildStatus);
             }
         }
 
-        updateLight()
-    }
-
-    private void updateLight() {
         Status highest = Status.SUCCESS
         for (Status status : projectStatus.values()) {
             if (status.ordinal() > highest.ordinal()) {
@@ -51,7 +54,9 @@ class TrafficLightEndpoint implements FeedbackEndpoint {
             }
         }
 
-        setTo(highest)
+        println("" + projectStatus + " => " + highest)
+
+        trafficLightStatus = highest;
     }
 
     private void setTo(Status status) {

@@ -1,13 +1,11 @@
 package com.tngtech.jenkins.notification.endpoints
 
 import com.tngtech.jenkins.notification.model.BuildInfo
-import com.tngtech.jenkins.notification.model.Config
 import com.tngtech.jenkins.notification.model.TtsConfig
 import javazoom.jl.player.Player
-import org.apache.camel.Body
 import org.apache.commons.codec.Charsets
 
-class TtsEndpoint implements FeedbackEndpoint {
+class TtsEndpoint extends BaseEndpoint {
 
     private static final String GOOGLE_TRANSLATE_TTS = "http://translate.google.com/translate_tts"
     private TtsConfig config
@@ -17,7 +15,7 @@ class TtsEndpoint implements FeedbackEndpoint {
     }
 
     @Override
-    void process(@Body BuildInfo buildInfo) throws Exception {
+    void processUpdate(BuildInfo buildInfo) throws Exception {
         String text = config.message.call(buildInfo)
         say(text)
     }
@@ -35,6 +33,5 @@ class TtsEndpoint implements FeedbackEndpoint {
         while (!player.isComplete()) {
             sleep(1000)
         }
-
     }
 }

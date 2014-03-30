@@ -4,10 +4,9 @@ import com.tngtech.jenkins.notification.model.BuildInfo
 import com.tngtech.jenkins.notification.model.MissileConfig
 import com.tngtech.missile.usb.MissileController
 import com.tngtech.missile.usb.MissileLauncher
-import org.apache.camel.Body
 import org.apache.camel.Handler
 
-class MissileEndpoint implements FeedbackEndpoint {
+class MissileEndpoint extends BaseEndpoint {
 
     private MissileConfig config
 
@@ -16,12 +15,15 @@ class MissileEndpoint implements FeedbackEndpoint {
     }
 
     @Handler
-    void process(@Body BuildInfo buildInfo) throws Exception {
+    void processUpdate(BuildInfo buildInfo) throws Exception {
         String status = buildInfo.status
         if (status.toUpperCase().startsWith('FAIL')) {
             def culprits = buildInfo.culprits
             shootAt(culprits.collect { it.id })
         }
+    }
+
+    void processInitial(BuildInfo buildInfo) throws Exception {
     }
 
     public void shootAt(List<String> culprits) {

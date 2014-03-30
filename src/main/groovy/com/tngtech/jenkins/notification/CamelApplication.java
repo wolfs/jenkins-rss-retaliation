@@ -10,13 +10,14 @@ import org.apache.camel.impl.DefaultCamelContext;
 import org.apache.camel.impl.SimpleRegistry;
 import org.apache.camel.main.Main;
 import org.apache.camel.model.MulticastDefinition;
-import org.apache.camel.processor.idempotent.FileIdempotentRepository;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import static org.apache.camel.processor.idempotent.FileIdempotentRepository.fileIdempotentRepository;
 
 public class CamelApplication extends Main {
     public static final String ENTRY_TO_BUILD_INFO_BEAN = "entryToBuildInfo";
@@ -55,13 +56,16 @@ public class CamelApplication extends Main {
     protected RouteBuilder createRoutes() throws Exception {
         return new RouteBuilder() {
             public void configure() throws Exception {
-                Date nowDate = new Date();
-                String now = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").format(nowDate);
-                fromF("atom:%s?splitEntries=true&consumer.delay=%s&lastUpdate=%s",
-                        config.getRssFeedUrl(),
-                        config.getPollInterval(),
-                        now).id("atom")
-                        .idempotentConsumer(simple("${body.id}"), FileIdempotentRepository.fileIdempotentRepository(new File("idrepo")))
+                Date date = new Date();
+                if (config.isHandleInitialEntries()) {
+                    date.setTime(0);
+                }
+                String dateString = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").format(date);
+
+                fromF("atom:%s?splitEntries=true&lastUpdate=%s&throttleEntries=false",
+                        config.getRssFeedUrl(), dateString)
+                        .id("atom")
+                        .idempotentConsumer(simple("${body.id}"), fileIdempotentRepository(new File("initialRepo")))
                         .toF("bean:%s", ENTRY_TO_BUILD_INFO_BEAN)
                         .to("log:com.tngtech.jenkins.notification?showAll=true&multiline=true")
                         .to("seda:feeds");
