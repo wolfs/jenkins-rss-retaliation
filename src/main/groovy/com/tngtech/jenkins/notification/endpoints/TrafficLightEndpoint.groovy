@@ -6,7 +6,6 @@ import com.tngtech.jenkins.notification.model.TrafficLightConfig
 import java.nio.file.Paths
 
 import static java.nio.file.Files.exists
-import static java.nio.file.Files.setLastModifiedTime
 
 class TrafficLightEndpoint extends BaseEndpoint {
 
@@ -32,20 +31,15 @@ class TrafficLightEndpoint extends BaseEndpoint {
 
     @Override
     void processUpdate(BuildInfo buildInfo) throws Exception {
-        updateLightStatus(buildInfo);
-        setTo(trafficLightStatus);
+        setTo(findOutCurrentStatus(buildInfo));
     }
 
     @Override
     void processInitial(BuildInfo buildInfo) throws Exception {
-        Status previousStatus = trafficLightStatus;
-        updateLightStatus(buildInfo);
-        if (previousStatus != trafficLightStatus) {
-            setTo(trafficLightStatus);
-        }
+        setTo(findOutCurrentStatus(buildInfo));
     }
 
-    private void updateLightStatus(BuildInfo buildInfo) {
+    private Status findOutCurrentStatus(BuildInfo buildInfo) {
         for (Status buildStatus : Status.values()) {
             if (buildInfo.status.startsWith(buildStatus.name())) {
                 projectStatus.put(buildInfo.project.name, buildStatus);
@@ -60,8 +54,7 @@ class TrafficLightEndpoint extends BaseEndpoint {
         }
 
         println("" + projectStatus + " => " + highest)
-
-        trafficLightStatus = highest;
+        return highest;
     }
 
     private void setTo(Status status) {
