@@ -2,59 +2,41 @@ package com.tngtech.jenkins.notification.endpoints
 
 import com.tngtech.jenkins.notification.model.BuildInfo
 import com.tngtech.jenkins.notification.model.TrafficLightConfig
-import org.apache.camel.Body
+import com.tngtech.jenkins.notification.status.BuildStatus
 
 import java.nio.file.Paths
 
+import static com.tngtech.jenkins.notification.status.BuildStatus.*
 import static java.nio.file.Files.exists
 
-class TrafficLightEndpoint implements FeedbackEndpoint {
+class TrafficLightEndpoint extends BaseEndpoint {
 
-    enum Status {
-        SUCCESS("G"), UNSTABLE("Y"), FAIL("R")
-
-        private String command;
-
-        private Status(String command) {
-            this.command = command;
-        }
-    }
+    private Map<BuildStatus, String> statusCommandMap = new HashMap<>();
 
     private String binaryPath;
-    private Status trafficLightStatus;
-    private Map<String, Status> projectStatus = new HashMap<>()
+    private BuildStatus trafficLightStatus;
 
     public TrafficLightEndpoint(TrafficLightConfig trafficLightConfig) {
         if (trafficLightConfig != null) {
             this.binaryPath = trafficLightConfig.clewareUsbSwitchBinary;
         }
+
+        statusCommandMap[SUCCESS] = "G";
+        statusCommandMap[UNSTABLE] = "Y";
+        statusCommandMap[FAIL] = "R";
     }
 
     @Override
-    void process(@Body BuildInfo buildInfo) throws Exception {
-        def status = buildInfo.status.toUpperCase();
-
-        for (Status buildStatus : Status.values()) {
-            if (status.startsWith(buildStatus.name())) {
-                projectStatus.put(buildInfo.project.name, buildStatus);
-            }
-        }
-
-        updateLight()
+    void processUpdate(BuildInfo buildInfo) throws Exception {
+        setTo(buildInfo.overallJobsStatus.status);
     }
 
-    private void updateLight() {
-        Status highest = Status.SUCCESS
-        for (Status status : projectStatus.values()) {
-            if (status.ordinal() > highest.ordinal()) {
-                highest = status;
-            }
-        }
-
-        setTo(highest)
+    @Override
+    void processInitial(BuildInfo buildInfo) throws Exception {
+        setTo(buildInfo.overallJobsStatus.status);
     }
 
-    private void setTo(Status status) {
+    private void setTo(BuildStatus status) {
         trafficLightStatus = status;
         if (binaryPath == null) return;
 
@@ -62,10 +44,11 @@ class TrafficLightEndpoint implements FeedbackEndpoint {
         if (! exists(binary)) {
             return;
         }
-        new ProcessBuilder().command(binary.toString(), status.command).start()
+        def process = new ProcessBuilder().command(binary.toString(), statusCommandMap.get(status)).start()
+        process.waitFor()
     }
 
-    Status getTrafficLightStatus() {
+    BuildStatus getTrafficLightStatus() {
         return trafficLightStatus
     }
 }

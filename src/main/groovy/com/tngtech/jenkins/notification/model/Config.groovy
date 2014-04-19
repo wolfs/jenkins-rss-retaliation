@@ -5,6 +5,7 @@ class Config {
     long pollInterval = 60000
     List<String> feedbackDevices
     boolean feedbackInParallel = false
+    boolean handleInitialEntries = false
 
     TtsConfig tts = new TtsConfig()
     MissileConfig missile = new MissileConfig()
