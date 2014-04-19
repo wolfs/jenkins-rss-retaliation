@@ -1,18 +1,13 @@
 package com.tngtech.jenkins.notification.endpoints
 
-import com.tngtech.jenkins.notification.model.BuildInfo
+import com.tngtech.jenkins.notification.camel.AllBuildInfosHolder
 
 abstract class BaseEndpoint implements FeedbackEndpoint {
 
-    @Override
-    void process(BuildInfo buildInfo) throws Exception {
-        if (buildInfo.isInitialParsing) {
-            processInitial(buildInfo)
-        } else {
-            processUpdate(buildInfo)
-        }
-    }
+    protected AllBuildInfosHolder allBuildInfosHolder
 
-    abstract void processUpdate(BuildInfo buildInfo) throws Exception;
-    void processInitial(BuildInfo buildInfo) throws  Exception {};
+    @Override
+    void init(AllBuildInfosHolder allBuildInfosHolder) {
+        this.allBuildInfosHolder = allBuildInfosHolder
+    }
 }

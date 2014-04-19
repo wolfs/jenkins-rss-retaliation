@@ -11,7 +11,7 @@ public class BuildInfoViaRestProviderTest extends Specification {
         BuildInfoViaRestProvider buildInfoViaRestProvider = new BuildInfoViaRestProvider();
 
         then:
-        buildInfoViaRestProvider.findBuildId('http://localhost:8080/job/downstream/13/') == ['http://localhost:8080/job/downstream/', 13]
+        buildInfoViaRestProvider.extractBaseUrl('http://localhost:8080/job/downstream/13/') == 'http://localhost:8080/job/downstream/'
     }
 
     @Ignore
@@ -22,4 +22,14 @@ public class BuildInfoViaRestProviderTest extends Specification {
         then:
         println buildInfoViaRestProvider.getBuildInfo(new IRI('http://localhost:8080/job/downstream/13/'))
     }
+
+    @Ignore
+    def 'Build infos are extracted from view'() {
+        when:
+        BuildInfoViaRestProvider buildInfoViaRestProvider = new BuildInfoViaRestProvider()
+
+        then:
+        println buildInfoViaRestProvider.queryInitalData('http://localhost:8080/view/ci/')
+    }
+
 }

@@ -1,5 +1,6 @@
 package com.tngtech.jenkins.notification;
 
+import com.tngtech.jenkins.notification.camel.CamelApplication;
 import com.tngtech.jenkins.notification.endpoints.MissileEndpoint;
 import com.tngtech.jenkins.notification.endpoints.TtsEndpoint;
 import com.tngtech.jenkins.notification.model.Config;

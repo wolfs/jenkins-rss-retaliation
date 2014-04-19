@@ -1,8 +1,12 @@
-package com.tngtech.jenkins.notification;
+package com.tngtech.jenkins.notification.camel;
 
+import com.tngtech.jenkins.notification.BuildInfoViaRestProvider;
 import com.tngtech.jenkins.notification.endpoints.FeedbackEndpoint;
 import com.tngtech.jenkins.notification.model.BuildInfo;
 import com.tngtech.jenkins.notification.model.Config;
+import com.tngtech.jenkins.notification.model.Project;
+import com.tngtech.jenkins.notification.camel.AllBuildInfosHolder;
+import com.tngtech.jenkins.notification.model.Result;
 import org.apache.abdera.i18n.iri.IRI;
 import org.apache.abdera.model.Entry;
 import org.apache.camel.CamelContext;
@@ -16,6 +20,7 @@ import org.apache.camel.impl.SimpleRegistry;
 import org.apache.camel.test.junit4.CamelTestSupport;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.invocation.InvocationOnMock;
@@ -34,6 +39,8 @@ import static org.mockito.Mockito.*;
 public class CamelApplicationTest extends CamelTestSupport {
 
     public static final int DEFAULT_TIMEOUT_MILLIS = 1000;
+    public static final String VIEW_BASE_URL = "http://localhost:8080/ci/";
+
     private SimpleRegistry registry = new SimpleRegistry();
 
     @Produce(uri = "direct:atom")
@@ -44,15 +51,23 @@ public class CamelApplicationTest extends CamelTestSupport {
     @Mock
     private FeedbackEndpoint someEndpoint;
     @Mock
+    private FeedbackEndpoint inactiveEndpoint;
+    @Mock
     private EntryToBuildInfo entryToBuildInfo;
     @Mock
     private BuildInfo buildInfo;
     @Mock
     private Entry entry;
+    @Mock
+    private AllBuildInfosHolder statusHolder;
+    @Mock
+    private BuildInfoViaRestProvider buildInfoViaRestProvider;
 
     private CountDownLatch missileCountdown = new CountDownLatch(1);
     private CountDownLatch someCountdown = new CountDownLatch(1);
     private Config config;
+    @InjectMocks
+    private CamelApplication camelApplication;
 
     @Override
     public boolean isUseAdviceWith() {
@@ -66,9 +81,11 @@ public class CamelApplicationTest extends CamelTestSupport {
         endpoints.add("missile");
         endpoints.add("some");
         config.setFeedbackDevices(endpoints);
-        config.setRssFeedUrl("http://localhost:8080/ci/rssAll");
+        config.setRssFeedUrl(VIEW_BASE_URL + "rssAll");
 
         config.setFeedbackInParallel(testName.getMethodName().contains("parallel"));
+
+        camelApplication = new CamelApplication(config);
     }
 
     @Before
@@ -76,7 +93,9 @@ public class CamelApplicationTest extends CamelTestSupport {
         MockitoAnnotations.initMocks(this);
         registry.put("missileEndpoint", missileEndpoint);
         registry.put("someEndpoint", someEndpoint);
+        registry.put("inactiveEndpoint", inactiveEndpoint);
         registry.put(CamelApplication.ENTRY_TO_BUILD_INFO_BEAN, entryToBuildInfo);
+        registry.put(CamelApplication.BUILD_JOB_STATUS_HOLDER, statusHolder);
 
         given(entry.getId()).willReturn(new IRI(UUID.randomUUID().toString()));
         given(entryToBuildInfo.process(entry)).willReturn(buildInfo);
@@ -87,6 +106,34 @@ public class CamelApplicationTest extends CamelTestSupport {
                 replaceFromWith("direct:atom");
             }
         });
+    }
+
+    @Test
+    public void BuildJobsStatus_is_queried_via_REST() throws Exception {
+        List<BuildInfo> buildInfos = new ArrayList<>();
+        buildInfos.add(buildInfoFor("project1", Result.SUCCESS));
+        buildInfos.add(buildInfoFor("project2", Result.FAILURE));
+        given(buildInfoViaRestProvider.queryInitalData(VIEW_BASE_URL)).willReturn(buildInfos);
+
+        camelApplication.init(registry);
+
+        verify(buildInfoViaRestProvider).queryInitalData(VIEW_BASE_URL);
+        for (BuildInfo buildInfo : buildInfos) {
+            verify(statusHolder).process(buildInfo);
+        }
+    }
+
+    @Test
+    public void BuildJobsStatus_is_injected_into_active_Endpoints() throws Exception {
+        camelApplication.init(registry);
+
+        verify(missileEndpoint).init(statusHolder);
+        verify(someEndpoint).init(statusHolder);
+        verify(inactiveEndpoint, never()).init(statusHolder);
+    }
+
+    private BuildInfo buildInfoFor(String project, Result result) {
+        return new BuildInfo(null, new Project(project, project), result);
     }
 
     @Test
@@ -151,7 +198,7 @@ public class CamelApplicationTest extends CamelTestSupport {
 
     @Override
     protected RouteBuilder createRouteBuilder() throws Exception {
-        return new CamelApplication(config).createRoutes();
+        return camelApplication.createRoutes();
     }
 
     @Override

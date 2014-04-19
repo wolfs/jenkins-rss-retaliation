@@ -2,19 +2,20 @@ package com.tngtech.jenkins.notification.endpoints
 
 import com.tngtech.jenkins.notification.model.BuildInfo
 import com.tngtech.jenkins.notification.model.TrafficLightConfig
-import com.tngtech.jenkins.notification.status.BuildStatus
+import com.tngtech.jenkins.notification.camel.AllBuildInfosHolder
+import com.tngtech.jenkins.notification.model.Result
 
 import java.nio.file.Paths
 
-import static com.tngtech.jenkins.notification.status.BuildStatus.*
+import static com.tngtech.jenkins.notification.model.Result.*
 import static java.nio.file.Files.exists
 
 class TrafficLightEndpoint extends BaseEndpoint {
 
-    private Map<BuildStatus, String> statusCommandMap = new HashMap<>();
+    private Map<Result, String> statusCommandMap = new HashMap<>();
 
     private String binaryPath;
-    private BuildStatus trafficLightStatus;
+    private Result trafficLightStatus;
 
     public TrafficLightEndpoint(TrafficLightConfig trafficLightConfig) {
         if (trafficLightConfig != null) {
@@ -23,20 +24,25 @@ class TrafficLightEndpoint extends BaseEndpoint {
 
         statusCommandMap[SUCCESS] = "G";
         statusCommandMap[UNSTABLE] = "Y";
-        statusCommandMap[FAIL] = "R";
+        statusCommandMap[FAILURE] = "R";
     }
 
     @Override
-    void processUpdate(BuildInfo buildInfo) throws Exception {
-        setTo(buildInfo.overallJobsStatus.status);
+    void process(BuildInfo buildInfo) throws Exception {
+        updateLight();
+    }
+
+    void updateLight() throws Exception {
+        setTo(allBuildInfosHolder.buildJobsStatus.overallResult);
     }
 
     @Override
-    void processInitial(BuildInfo buildInfo) throws Exception {
-        setTo(buildInfo.overallJobsStatus.status);
+    void init(AllBuildInfosHolder allBuildInfosHolder) {
+        super.init(allBuildInfosHolder)
+        updateLight();
     }
 
-    private void setTo(BuildStatus status) {
+    private void setTo(Result status) {
         trafficLightStatus = status;
         if (binaryPath == null) return;
 
@@ -47,7 +53,7 @@ class TrafficLightEndpoint extends BaseEndpoint {
         new ProcessBuilder().command(binary.toString(), statusCommandMap.get(status)).start()
     }
 
-    BuildStatus getTrafficLightStatus() {
+    Result getTrafficLightStatus() {
         return trafficLightStatus
     }
 }

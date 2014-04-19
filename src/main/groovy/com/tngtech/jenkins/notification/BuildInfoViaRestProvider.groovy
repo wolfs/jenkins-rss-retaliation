@@ -3,6 +3,7 @@ package com.tngtech.jenkins.notification
 import com.tngtech.jenkins.notification.model.BuildInfo
 import com.tngtech.jenkins.notification.model.Culprit
 import com.tngtech.jenkins.notification.model.Project
+import com.tngtech.jenkins.notification.model.Result
 import groovyx.net.http.RESTClient
 import org.apache.abdera.i18n.iri.IRI
 
@@ -10,23 +11,39 @@ import java.util.regex.Matcher
 
 class BuildInfoViaRestProvider {
 
+    private static final String PROJECT_DATA='displayName,name'
+    private static final String BUILD_DATA='number,result,culprits[fullName,id]'
+
     BuildInfo getBuildInfo(IRI linkToBuild) {
         String url = linkToBuild.toASCIIString()
-        def (baseUrl, buildId) = findBuildId(url)
+        String baseUrl = extractBaseUrl(url)
 
-        def buildData = queryRestApiForJson(url, 'tree=number,result,culprits[fullName,id]')
+        def buildData = queryRestApiForJson(url, "tree=${BUILD_DATA}")
+        def projectData = queryRestApiForJson(baseUrl, "tree=${PROJECT_DATA}")
 
+        return createBuildInfo(buildData, projectData)
+    }
+
+
+    public List<BuildInfo> queryInitalData(String url) {
+        def viewData = queryRestApiForJson(url, "tree=jobs[${PROJECT_DATA},lastBuild[${BUILD_DATA}]]")
+
+        return viewData.jobs.findAll { it.lastBuild }.collect { job ->
+            createBuildInfo(job.lastBuild, job)
+        }
+    }
+
+    private BuildInfo createBuildInfo(buildData, projectData) {
         def culprits = buildData.culprits.collect { culprit ->
             new Culprit(id: culprit.id, fullName: culprit.fullName)
         }
-        def result = buildData.result
+        def result = Result.fromString(buildData.result)
 
-        def projectData = queryRestApiForJson(baseUrl, 'tree=displayName,name,builds[number,url]')
         Project project = new Project(name: projectData.name, displayName: projectData.displayName)
 
         return new BuildInfo(
                 culprits: culprits,
-                status: result,
+                result: result,
                 project: project,
                 buildNumber: buildData.number
         )
@@ -38,12 +55,11 @@ class BuildInfoViaRestProvider {
         return resp.responseData
     }
 
-    def findBuildId(String url) {
+    String extractBaseUrl(String url) {
         Matcher matcher = (url =~ '(.*/)([0-9]+)/?$')
 
         def match = matcher[0]
-        int buildId = Integer.valueOf(match[2])
         String baseUrl = match[1]
-        return [baseUrl, buildId]
+        return baseUrl
     }
 }
