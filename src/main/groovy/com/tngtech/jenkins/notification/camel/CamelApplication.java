@@ -95,8 +95,8 @@ public class CamelApplication extends Main {
                 Date date = new Date();
                 String dateString = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").format(date);
 
-                fromF("atom:%s?splitEntries=true&lastUpdate=%s&throttleEntries=false",
-                        config.getRssFeedUrl(), dateString)
+                fromF("atom:%s?splitEntries=true&lastUpdate=%s&throttleEntries=false&consumer.delay=%d",
+                        config.getRssFeedUrl(), dateString, config.getPollInterval())
                         .id("atom")
                         .idempotentConsumer(simple("${body.id}"), fileIdempotentRepository(new File("initialRepo")))
                         .toF("bean:%s", ENTRY_TO_BUILD_INFO_BEAN)

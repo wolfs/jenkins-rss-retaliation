@@ -50,7 +50,8 @@ class TrafficLightEndpoint extends BaseEndpoint {
         if (! exists(binary)) {
             return;
         }
-        new ProcessBuilder().command(binary.toString(), statusCommandMap.get(status)).start()
+        def process = new ProcessBuilder().command(binary.toString(), statusCommandMap.get(status)).start()
+        process.waitFor()
     }
 
     Result getTrafficLightStatus() {
