@@ -13,6 +13,7 @@ class BuildInfoViaRestProvider {
 
     private static final String PROJECT_DATA='displayName,name'
     private static final String BUILD_DATA='number,result,culprits[fullName,id]'
+    private static final String PROJECT_AND_LAST_BUILD = "${PROJECT_DATA},lastBuild[${BUILD_DATA}]"
 
     BuildInfo getBuildInfo(IRI linkToBuild) {
         String url = linkToBuild.toASCIIString()
@@ -26,11 +27,19 @@ class BuildInfoViaRestProvider {
 
 
     public List<BuildInfo> queryInitalData(String url) {
-        def viewData = queryRestApiForJson(url, "tree=jobs[${PROJECT_DATA},lastBuild[${BUILD_DATA}]]")
+        def viewData = queryRestApiForJson(
+                url,
+                "tree=jobs[${PROJECT_AND_LAST_BUILD}],${PROJECT_AND_LAST_BUILD}")
 
-        return viewData.jobs.findAll { it.lastBuild }.collect { job ->
-            createBuildInfo(job.lastBuild, job)
+        List<BuildInfo> buildInfos = []
+        if (viewData.jobs) {
+            buildInfos += viewData.jobs.findAll { it.lastBuild }.collect { job ->
+                createBuildInfo(job.lastBuild, job)
+            }
+        } else {
+            buildInfos += createBuildInfo(viewData.lastBuild, viewData)
         }
+        return buildInfos
     }
 
     private BuildInfo createBuildInfo(buildData, projectData) {

@@ -32,4 +32,13 @@ public class BuildInfoViaRestProviderTest extends Specification {
         println buildInfoViaRestProvider.queryInitalData('http://localhost:8080/view/ci/')
     }
 
+    @Ignore
+    def 'Build infos are extracted from job'() {
+        when:
+        BuildInfoViaRestProvider buildInfoViaRestProvider = new BuildInfoViaRestProvider()
+
+        then:
+        println buildInfoViaRestProvider.queryInitalData('http://localhost:8080/job/resultSetter/')
+    }
+
 }
