@@ -7,8 +7,6 @@ import org.apache.abdera.model.Entry;
 import org.apache.camel.Body;
 import org.apache.camel.Handler;
 
-import java.util.Date;
-
 public class EntryToBuildInfo {
     private BuildInfoViaRestProvider provider;
 
@@ -17,7 +15,7 @@ public class EntryToBuildInfo {
     }
 
     @Handler
-    public BuildInfo process(@Body Entry entry) throws Exception {
+    public BuildInfo process(@Body Entry entry) {
         IRI link = entry.getAlternateLink().getHref();
         BuildInfo buildInfo = provider.getBuildInfo(link);
         buildInfo.setFeedMessage(entry.getTitle());

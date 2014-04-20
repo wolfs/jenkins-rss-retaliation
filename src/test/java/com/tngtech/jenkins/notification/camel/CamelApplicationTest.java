@@ -5,7 +5,6 @@ import com.tngtech.jenkins.notification.endpoints.FeedbackEndpoint;
 import com.tngtech.jenkins.notification.model.BuildInfo;
 import com.tngtech.jenkins.notification.model.Config;
 import com.tngtech.jenkins.notification.model.Project;
-import com.tngtech.jenkins.notification.camel.AllBuildInfosHolder;
 import com.tngtech.jenkins.notification.model.Result;
 import org.apache.abdera.i18n.iri.IRI;
 import org.apache.abdera.model.Entry;
@@ -38,13 +37,13 @@ import static org.mockito.Mockito.*;
 
 public class CamelApplicationTest extends CamelTestSupport {
 
-    public static final int DEFAULT_TIMEOUT_MILLIS = 1000;
-    public static final String VIEW_BASE_URL = "http://localhost:8080/ci/";
+    private static final int DEFAULT_TIMEOUT_MILLIS = 1000;
+    private static final String VIEW_BASE_URL = "http://localhost:8080/ci/";
 
     private SimpleRegistry registry = new SimpleRegistry();
 
     @Produce(uri = "direct:atom")
-    protected ProducerTemplate producer;
+    private ProducerTemplate producer;
 
     @Mock
     private FeedbackEndpoint missileEndpoint;

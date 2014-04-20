@@ -45,7 +45,7 @@ public class MissileLauncher {
         return missileLauncher;
     }
 
-    public MissileLauncher(UsbDevice device) {
+    private MissileLauncher(UsbDevice device) {
         this.device = device;
     }
 

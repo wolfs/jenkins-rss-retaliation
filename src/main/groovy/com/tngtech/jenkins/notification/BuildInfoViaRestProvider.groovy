@@ -33,10 +33,12 @@ class BuildInfoViaRestProvider {
 
         List<BuildInfo> buildInfos = []
         if (viewData.jobs) {
+            // Data from Views -> List of jobs
             buildInfos += viewData.jobs.findAll { it.lastBuild }.collect { job ->
                 createBuildInfo(job.lastBuild, job)
             }
         } else {
+            // Data from a single job
             buildInfos += createBuildInfo(viewData.lastBuild, viewData)
         }
         return buildInfos

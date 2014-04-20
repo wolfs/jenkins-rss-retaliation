@@ -7,7 +7,6 @@ import com.tngtech.jenkins.notification.endpoints.TrafficLightEndpoint;
 import com.tngtech.jenkins.notification.endpoints.TtsEndpoint;
 import com.tngtech.jenkins.notification.model.BuildInfo;
 import com.tngtech.jenkins.notification.model.Config;
-import com.tngtech.jenkins.notification.camel.AllBuildInfosHolder;
 import org.apache.camel.CamelContext;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.impl.DefaultCamelContext;
@@ -27,15 +26,16 @@ import static org.apache.camel.processor.idempotent.FileIdempotentRepository.fil
 public class CamelApplication extends Main {
     public static final String ENTRY_TO_BUILD_INFO_BEAN = "entryToBuildInfo";
 
-    public static final String MISSILE_ENDPOINT = "missileEndpoint";
-    public static final String TTS_ENDPOINT = "ttsEndpoint";
-    public static final String TRAFFIC_LIGHT_ENDPOINT = "trafficLightEndpoint";
+    private static final String MISSILE_ENDPOINT = "missileEndpoint";
+    private static final String TTS_ENDPOINT = "ttsEndpoint";
+    private static final String TRAFFIC_LIGHT_ENDPOINT = "trafficLightEndpoint";
     public static final String BUILD_JOB_STATUS_HOLDER = "buildJobStatusHolder";
     private Config config;
     private BuildInfoViaRestProvider buildInfoViaRestProvider = new BuildInfoViaRestProvider();
     private AllBuildInfosHolder buildJobsStatusHolder = new AllBuildInfosHolder();
 
-    private CamelApplication() {}
+    private CamelApplication() {
+    }
 
     public CamelApplication(Config config) {
         this.config = config;
@@ -89,7 +89,7 @@ public class CamelApplication extends Main {
         }
     }
 
-    RouteBuilder createRoutes() throws Exception {
+    RouteBuilder createRoutes() {
         return new RouteBuilder() {
             public void configure() throws Exception {
                 Date date = new Date();
