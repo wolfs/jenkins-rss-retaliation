@@ -13,7 +13,8 @@ class BuildInfoViaRestProvider {
 
     private static final String PROJECT_DATA='displayName,name'
     private static final String BUILD_DATA='number,result,culprits[fullName,id]'
-    private static final String PROJECT_AND_LAST_BUILD = "${PROJECT_DATA},lastBuild[${BUILD_DATA}]"
+    private static final String BUILD_PERMA_LINK='lastCompletedBuild'
+    private static final String PROJECT_AND_LAST_BUILD = "${PROJECT_DATA},${BUILD_PERMA_LINK}[${BUILD_DATA}]"
 
     BuildInfo getBuildInfo(IRI linkToBuild) {
         String url = linkToBuild.toASCIIString()
@@ -34,12 +35,12 @@ class BuildInfoViaRestProvider {
         List<BuildInfo> buildInfos = []
         if (viewData.jobs) {
             // Data from Views -> List of jobs
-            buildInfos += viewData.jobs.findAll { it.lastBuild }.collect { job ->
-                createBuildInfo(job.lastBuild, job)
+            buildInfos += viewData.jobs.findAll { it[BUILD_PERMA_LINK] }.collect { job ->
+                createBuildInfo(job[BUILD_PERMA_LINK], job)
             }
         } else {
             // Data from a single job
-            buildInfos += createBuildInfo(viewData.lastBuild, viewData)
+            buildInfos += createBuildInfo(viewData[BUILD_PERMA_LINK], viewData)
         }
         return buildInfos
     }

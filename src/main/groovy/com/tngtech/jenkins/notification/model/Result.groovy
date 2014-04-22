@@ -10,7 +10,7 @@ enum Result {
     }
 
     static fromString(String result) {
-        String upperCaseResult = result.toUpperCase()
+        String upperCaseResult = result?.toUpperCase()
         if (values().collect { it.name() }.contains(upperCaseResult)) {
             return valueOf(upperCaseResult)
         } else {
