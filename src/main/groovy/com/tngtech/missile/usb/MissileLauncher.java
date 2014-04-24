@@ -7,6 +7,16 @@ import java.util.Set;
 
 public class MissileLauncher {
 
+    public static final UsbInterfacePolicy FORCE_CLAIM_POLICY = new UsbInterfacePolicy() {
+        @Override
+        public boolean forceClaim(UsbInterface usbInterface) {
+            return true;
+        }
+    };
+
+    // On Linux we need to claim the usb-device
+    public static final boolean NEEDS_CLAIM = "Linux".equalsIgnoreCase(System.getProperty("os.name"));
+
     public enum Command {
         LEFT(0x04),
         RIGHT(0x08),
@@ -50,14 +60,24 @@ public class MissileLauncher {
     }
 
     public void execute(Command command) throws UsbException {
-        UsbControlIrp irp = device.createUsbControlIrp(
-                (byte) (UsbConst.REQUESTTYPE_TYPE_CLASS | UsbConst.REQUESTTYPE_RECIPIENT_INTERFACE),
-                UsbConst.REQUEST_SET_CONFIGURATION,
-                (short) 0,
-                (short) 0);
-        irp.setData(command.bytes);
-        device.syncSubmit(irp);
-
+        UsbInterface usbInterface = null;
+        if (NEEDS_CLAIM) {
+            usbInterface = device.getActiveUsbConfiguration().getUsbInterface((byte) 0);
+            usbInterface.claim(FORCE_CLAIM_POLICY);
+        }
+        try {
+            UsbControlIrp irp = device.createUsbControlIrp(
+                    (byte) (UsbConst.REQUESTTYPE_TYPE_CLASS | UsbConst.REQUESTTYPE_RECIPIENT_INTERFACE),
+                    UsbConst.REQUEST_SET_CONFIGURATION,
+                    (short) 0,
+                    (short) 0);
+            irp.setData(command.bytes);
+            device.syncSubmit(irp);
+        } finally {
+            if (usbInterface != null) {
+                usbInterface.release();
+            }
+        }
     }
 
     private static UsbDevice findDevice() throws UsbException {
