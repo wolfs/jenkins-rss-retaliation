@@ -98,7 +98,10 @@ public class CamelApplication extends Main {
                 fromF("atom:%s?splitEntries=true&lastUpdate=%s&throttleEntries=false&consumer.delay=%d",
                         config.getRssFeedUrl(), dateString, config.getPollInterval())
                         .id("atom")
-                        .idempotentConsumer(simple("${body.id}"), fileIdempotentRepository(new File("initialRepo")))
+                        .idempotentConsumer(
+                                simple("${body.id}"),
+                                fileIdempotentRepository(new File("initialRepo")))
+                        .removeOnFailure(false)
                         .toF("bean:%s", ENTRY_TO_BUILD_INFO_BEAN)
                         .toF("bean:%s", BUILD_JOB_STATUS_HOLDER)
                         .to("log:com.tngtech.jenkins.notification?showAll=true&multiline=true")
