@@ -104,7 +104,7 @@ public class CamelApplication extends Main {
                         .removeOnFailure(false)
                         .toF("bean:%s", ENTRY_TO_BUILD_INFO_BEAN)
                         .toF("bean:%s", BUILD_JOB_STATUS_HOLDER)
-                        .to("log:com.tngtech.jenkins.notification?showAll=true&multiline=true")
+                        .to("log:com.tngtech.jenkins.notification?showBody=true&multiline=true")
                         .to("seda:feeds");
 
                 List<String> endpoints = new ArrayList<>();

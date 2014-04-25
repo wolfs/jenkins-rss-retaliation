@@ -33,7 +33,7 @@ class MissileEndpoint extends BaseEndpoint {
         }.findAll().toSet()
 
         if (!toShootAt) {
-            toShootAt = [locations.unknown]
+            toShootAt = [locations?.unknown].findAll()
         }
 
         def launcher = MissileLauncher.findMissileLauncher()

@@ -5,8 +5,11 @@ import com.tngtech.jenkins.notification.model.BuildInfo
 import com.tngtech.jenkins.notification.model.AllBuildInfos
 import org.apache.camel.Body
 import org.apache.camel.Handler
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 
 class AllBuildInfosHolder {
+    private static final Logger LOG = LoggerFactory.getLogger(AllBuildInfosHolder)
     private Map<String, BuildHistory> jobsHistory = new HashMap<>()
 
     @Handler
@@ -25,6 +28,9 @@ class AllBuildInfosHolder {
     private void updateJobsHistory(BuildInfo buildInfo) {
         BuildHistory history = getHistoryForBuildInfo(buildInfo)
         jobsHistory.put(getKey(buildInfo), history.nextBuild(buildInfo))
+        LOG.info('Updated Jobs History to \n{}', jobsHistory.collect { proj, hist ->
+            "${proj}: ${hist?.currentBuild?.result}"
+        }.join('\n'))
     }
 
     private BuildHistory getHistoryForBuildInfo(BuildInfo buildInfo) {

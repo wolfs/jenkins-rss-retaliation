@@ -9,4 +9,15 @@ class BuildInfo {
     Result result
     String buildNumber
     List<Culprit> culprits
+
+
+    @Override
+    public String toString() {
+        return "BuildInfo{" +
+                "culprits=" + culprits.collect { it.id } +
+                ", project=" + project.name +
+                ", result=" + result +
+                ", buildNumber='" + buildNumber + '\'' +
+                '}';
+    }
 }
