@@ -14,14 +14,13 @@ import org.apache.camel.impl.SimpleRegistry;
 import org.apache.camel.main.Main;
 import org.apache.camel.model.MulticastDefinition;
 
-import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import static org.apache.camel.processor.idempotent.FileIdempotentRepository.fileIdempotentRepository;
+import static org.apache.camel.processor.idempotent.MemoryIdempotentRepository.memoryIdempotentRepository;
 
 public class CamelApplication extends Main {
     public static final String ENTRY_TO_BUILD_INFO_BEAN = "entryToBuildInfo";
@@ -100,7 +99,7 @@ public class CamelApplication extends Main {
                         .id("atom")
                         .idempotentConsumer(
                                 simple("${body.id}"),
-                                fileIdempotentRepository(new File("initialRepo")))
+                                memoryIdempotentRepository())
                         .removeOnFailure(false)
                         .toF("bean:%s", ENTRY_TO_BUILD_INFO_BEAN)
                         .toF("bean:%s", BUILD_JOB_STATUS_HOLDER)
