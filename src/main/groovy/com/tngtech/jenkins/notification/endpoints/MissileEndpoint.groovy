@@ -2,15 +2,13 @@ package com.tngtech.jenkins.notification.endpoints
 
 import com.tngtech.jenkins.notification.model.BuildInfo
 import com.tngtech.jenkins.notification.model.MissileConfig
-import com.tngtech.jenkins.notification.model.Result
 import com.tngtech.missile.usb.MissileController
 import com.tngtech.missile.usb.MissileLauncher
-import org.apache.camel.Body
-import org.apache.camel.Handler
 
 class MissileEndpoint extends BaseEndpoint {
 
     private MissileConfig config
+
 
     MissileEndpoint(MissileConfig config) {
         this.config = config
@@ -19,8 +17,7 @@ class MissileEndpoint extends BaseEndpoint {
     @Override
     void process(BuildInfo buildInfo) throws Exception {
         if (allBuildInfosHolder.hasResultChanged(buildInfo) &&
-                [Result.FAILURE, Result.UNSTABLE].contains(buildInfo.result)
-        ) {
+                config.whenToShoot.contains(buildInfo.result)) {
             def culprits = buildInfo.culprits
             shootAt(culprits.collect { it.id })
         }

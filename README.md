@@ -29,7 +29,7 @@ config.groovy:
 
     rssFeedUrl='http://localhost:8080/rssFailed' // rss-feed from Jenkins
     pollInterval=10000 // Poll interval for the rss-Feed
-    feedbackDevices=['tts'] // Active feedback devices. Possible entries: missile, tts
+    feedbackDevices=['tts'] // Active feedback devices. Possible entries: missile, tts, trafficLight
     feedbackInParallel=false // Should the feedback devices be triggered in parallel or sequentially?
 
     missile {
@@ -53,6 +53,7 @@ config.groovy:
 
             ]
         }
+        whenToShoot=['UNSTABLE', 'FAILURE'] // Result on when to shoot, possible values: SUCCESS, UNSTABLE, FAILURE, NOT_BUILT, ABORTED
     }
 
     tts {

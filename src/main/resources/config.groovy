@@ -24,6 +24,7 @@ missile {
 
         ]
     }
+    whenToShoot=['FAILURE']
 }
 
 tts {
