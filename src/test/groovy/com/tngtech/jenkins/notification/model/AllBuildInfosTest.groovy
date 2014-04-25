@@ -14,7 +14,7 @@ class AllBuildInfosTest extends Specification {
     def 'Overall result for #results is #overallResult'(List<Result> results, Result overallResult) {
         given:
         int count = 0
-        def map = results.collectEntries { ["project${count++}", it] }
+        def map = results.collectEntries { ["project${count++}", new BuildHistory().nextBuild(new BuildInfo(result: it))] }
         def buildJobsStatus = new AllBuildInfos(map);
 
         when:

@@ -2,6 +2,7 @@ package com.tngtech.jenkins.notification.endpoints
 
 import com.tngtech.jenkins.notification.model.BuildInfo
 import com.tngtech.jenkins.notification.model.MissileConfig
+import com.tngtech.jenkins.notification.model.Result
 import com.tngtech.missile.usb.MissileController
 import com.tngtech.missile.usb.MissileLauncher
 import org.apache.camel.Body
@@ -17,8 +18,9 @@ class MissileEndpoint extends BaseEndpoint {
 
     @Override
     void process(BuildInfo buildInfo) throws Exception {
-        String status = buildInfo.result
-        if (status.toUpperCase().startsWith('FAIL')) {
+        if (allBuildInfosHolder.hasResultChanged(buildInfo) &&
+                [Result.FAILURE, Result.UNSTABLE].contains(buildInfo.result)
+        ) {
             def culprits = buildInfo.culprits
             shootAt(culprits.collect { it.id })
         }

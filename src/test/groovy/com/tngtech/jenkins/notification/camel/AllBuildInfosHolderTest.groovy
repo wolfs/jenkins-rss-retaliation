@@ -1,6 +1,6 @@
 package com.tngtech.jenkins.notification.camel
 
-import com.tngtech.jenkins.notification.camel.AllBuildInfosHolder
+import com.tngtech.jenkins.notification.model.BuildHistory
 import com.tngtech.jenkins.notification.model.BuildInfo
 import com.tngtech.jenkins.notification.model.Project
 import com.tngtech.jenkins.notification.model.Result
@@ -14,9 +14,17 @@ class AllBuildInfosHolderTest extends Specification {
         when:
         holder.process(buildInfoFor("a", Result.SUCCESS))
         holder.process(buildInfoFor("b", Result.FAILURE))
+        holder.process(buildInfoFor("a", Result.FAILURE))
 
         then:
-        holder.buildJobsStatus.allJobsResults == [ "a" : Result.SUCCESS, "b" : Result.FAILURE ]
+        holder.allBuildInfos.jobsHistory == [ a : historyFor('a', Result.SUCCESS, Result.FAILURE), b: historyFor('b', Result.FAILURE)]
+    }
+
+    private BuildHistory historyFor(String projectName, Result... results) {
+        BuildHistory history = new BuildHistory()
+        results.each { result -> history.nextBuild(buildInfoFor(projectName, result)) }
+
+        history
     }
 
     def BuildInfo buildInfoFor(String project, Result result) {

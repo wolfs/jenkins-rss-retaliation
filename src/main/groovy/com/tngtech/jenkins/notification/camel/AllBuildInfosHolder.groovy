@@ -1,24 +1,37 @@
 package com.tngtech.jenkins.notification.camel
 
+import com.tngtech.jenkins.notification.model.BuildHistory
 import com.tngtech.jenkins.notification.model.BuildInfo
 import com.tngtech.jenkins.notification.model.AllBuildInfos
-import com.tngtech.jenkins.notification.model.Result
 import org.apache.camel.Body
 import org.apache.camel.Handler
 
 class AllBuildInfosHolder {
-    private Map<String, Result> job2Result = new HashMap<>()
+    private Map<String, BuildHistory> jobsHistory = new HashMap<>()
 
     @Handler
     void process(@Body BuildInfo buildInfo) {
-        updateStatusMapWith(buildInfo)
+        updateJobsHistory(buildInfo)
     }
 
-    public AllBuildInfos getBuildJobsStatus() {
-        return new AllBuildInfos(new HashMap<String, Result>(job2Result));
+    AllBuildInfos getAllBuildInfos() {
+        return new AllBuildInfos(new HashMap<String, BuildHistory>(jobsHistory));
     }
 
-    private void updateStatusMapWith(BuildInfo buildInfo) {
-        job2Result.put(buildInfo.project.name, buildInfo.result);
+    boolean hasResultChanged(BuildInfo buildInfo) {
+        getHistoryForBuildInfo(buildInfo).hasResultChanged()
+    }
+
+    private void updateJobsHistory(BuildInfo buildInfo) {
+        BuildHistory history = getHistoryForBuildInfo(buildInfo)
+        jobsHistory.put(getKey(buildInfo), history.nextBuild(buildInfo))
+    }
+
+    private BuildHistory getHistoryForBuildInfo(BuildInfo buildInfo) {
+        jobsHistory.get(getKey(buildInfo)) ?: new BuildHistory()
+    }
+
+    private String getKey(BuildInfo buildInfo) {
+        buildInfo.project.name
     }
 }

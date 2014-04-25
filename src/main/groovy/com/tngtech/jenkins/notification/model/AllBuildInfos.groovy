@@ -5,18 +5,19 @@ import static com.tngtech.jenkins.notification.model.Result.NOT_BUILT
 import static com.tngtech.jenkins.notification.model.Result.SUCCESS
 
 class AllBuildInfos {
-    private Map<String, Result> allJobsResults;
+    private Map<String, BuildHistory> jobsHistory;
     private Set<Result> resultsToIgnore = EnumSet.of(ABORTED, NOT_BUILT)
 
-    public AllBuildInfos(Map<String, Result> allJobsResults) {
-        this.allJobsResults = allJobsResults;
+    public AllBuildInfos(Map<String, BuildHistory> jobsHistory) {
+        this.jobsHistory = jobsHistory;
     }
 
     public Result getOverallResult() {
         Result highest = SUCCESS
-        for (Result status : allJobsResults.values()) {
-            if ((status.ordinal > highest.ordinal) && (!resultsToIgnore.contains(status))) {
-                highest = status;
+        for (BuildHistory history : jobsHistory.values()) {
+            Result currentResult = history.currentResult
+            if ((currentResult.ordinal > highest.ordinal) && (!resultsToIgnore.contains(currentResult))) {
+                highest = currentResult;
             }
         }
 
@@ -26,7 +27,7 @@ class AllBuildInfos {
     @Override
     public String toString() {
         return "AllBuildInfos{" +
-                "allJobsResults=" + allJobsResults +
+                "jobsHistory=" + jobsHistory +
                 ",overallResult=" + overallResult +
                 '}';
     }

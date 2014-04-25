@@ -33,7 +33,7 @@ class TrafficLightEndpoint extends BaseEndpoint {
     }
 
     void updateLight() throws Exception {
-        setTo(allBuildInfosHolder.buildJobsStatus.overallResult);
+        setTo(allBuildInfosHolder.allBuildInfos.overallResult);
     }
 
     @Override

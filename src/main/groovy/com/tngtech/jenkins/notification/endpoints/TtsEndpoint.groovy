@@ -16,9 +16,11 @@ class TtsEndpoint extends BaseEndpoint {
 
     @Override
     void process(BuildInfo buildInfo) throws Exception {
-        String text = config.message.call(buildInfo)
-        if (text) {
-            say(text)
+        if (allBuildInfosHolder.hasResultChanged(buildInfo)) {
+            String text = config.message.call(buildInfo)
+            if (text) {
+                say(text)
+            }
         }
     }
 
