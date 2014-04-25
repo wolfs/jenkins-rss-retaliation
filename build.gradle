@@ -78,6 +78,8 @@ task javadocJar(type: Jar, dependsOn: javadoc) {
     from javadoc.destinationDir
 }
 
+task jpi(dependsOn: distZip)
+
 publishing {
     publications {
         mavenJava(MavenPublication) {
