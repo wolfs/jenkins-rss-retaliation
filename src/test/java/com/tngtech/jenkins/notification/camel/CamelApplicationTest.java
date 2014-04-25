@@ -33,6 +33,7 @@ import java.util.concurrent.TimeUnit;
 
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.willAnswer;
+import static org.mockito.BDDMockito.willThrow;
 import static org.mockito.Mockito.*;
 
 public class CamelApplicationTest extends CamelTestSupport {
@@ -180,6 +181,26 @@ public class CamelApplicationTest extends CamelTestSupport {
         verify(someEndpoint, timeout(DEFAULT_TIMEOUT_MILLIS)).process(buildInfo);
 
         assertTrue(notify.matches(DEFAULT_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS));
+
+        verifyNoMoreInteractions(missileEndpoint, someEndpoint);
+    }
+
+    @Test
+    public void on_error_the_message_is_added_to_idRepo() throws Exception {
+        willThrow(NullPointerException.class).given(missileEndpoint).process(any(BuildInfo.class));
+
+        NotifyBuilder notify = new NotifyBuilder(context).from("direct:atom").whenDone(2).create();
+
+        context.start();
+
+        producer.sendBody(entry);
+        verify(missileEndpoint, timeout(DEFAULT_TIMEOUT_MILLIS)).process(buildInfo);
+        verify(someEndpoint, timeout(DEFAULT_TIMEOUT_MILLIS)).process(buildInfo);
+
+        producer.sendBody(entry);
+
+        assertTrue(notify.matches(DEFAULT_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS));
+        Thread.sleep(1000);
 
         verifyNoMoreInteractions(missileEndpoint, someEndpoint);
     }
