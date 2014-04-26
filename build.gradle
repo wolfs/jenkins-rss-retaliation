@@ -7,28 +7,28 @@ apply plugin: 'maven-publish'
 mainClassName = "com.tngtech.jenkins.notification.Bootstrap"
 sourceCompatibility = "1.7"
 
-//buildscript {
-//    repositories {
-//        mavenCentral()
-//    }
-//
-//    dependencies {
-//        classpath('au.com.ish.gradle:release:2.2.2') {
-//            exclude group: 'org.tmatesoft.svnkit'
-//        }
-//    }
-//}
+buildscript {
+    repositories {
+        mavenCentral()
+    }
 
-//apply plugin: 'release'
-//
-//release {
-//    failOnSnapshotDependencies = true
-//    allowLocalModifications = true
-//    releaseDryRun = false
-//    scm = 'git'
-//}
-//version = release.projectVersion
-version='0.9.9-SNAPSHOT'
+    dependencies {
+        classpath('au.com.ish.gradle:release:2.2.2') {
+            exclude group: 'org.tmatesoft.svnkit'
+        }
+    }
+}
+
+apply plugin: 'release'
+
+release {
+    failOnSnapshotDependencies = true
+    allowLocalModifications = true
+    releaseDryRun = false
+    scm = 'git'
+}
+version = release.projectVersion
+//version='0.9.9-SNAPSHOT'
 
 repositories {
     mavenCentral()
