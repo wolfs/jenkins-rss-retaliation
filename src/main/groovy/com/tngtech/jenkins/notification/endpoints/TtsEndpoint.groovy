@@ -7,7 +7,7 @@ import org.apache.commons.codec.Charsets
 
 class TtsEndpoint extends BaseEndpoint {
 
-    private static final String GOOGLE_TRANSLATE_TTS = "http://translate.google.com/translate_tts"
+    private static final String GOOGLE_TRANSLATE_TTS = 'http://translate.google.com/translate_tts'
     private TtsConfig config
 
     TtsEndpoint(TtsConfig config) {
@@ -24,12 +24,12 @@ class TtsEndpoint extends BaseEndpoint {
         }
     }
 
-    public void say(String text) {
+    void say(String text) {
         URL url = new URL("${GOOGLE_TRANSLATE_TTS}?tl=${config.lang}&q=${URLEncoder.encode(text, Charsets.UTF_8.toString())}")
-        URLConnection urlConn = url.openConnection();
-        urlConn.addRequestProperty("User-Agent",
-                "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.0)");
-        InputStream audioSrc = urlConn.getInputStream();
+        URLConnection urlConn = url.openConnection()
+        urlConn.addRequestProperty('User-Agent',
+                'Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.0)')
+        InputStream audioSrc = urlConn.inputStream
 
         def player = new Player(new BufferedInputStream(audioSrc))
         player.play()

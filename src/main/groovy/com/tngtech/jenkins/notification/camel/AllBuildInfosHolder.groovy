@@ -18,7 +18,7 @@ class AllBuildInfosHolder {
     }
 
     AllBuildInfos getAllBuildInfos() {
-        return new AllBuildInfos(new HashMap<String, BuildHistory>(jobsHistory));
+        new AllBuildInfos(new HashMap<String, BuildHistory>(jobsHistory))
     }
 
     boolean hasResultChanged(BuildInfo buildInfo) {

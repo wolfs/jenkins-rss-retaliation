@@ -1,7 +1,7 @@
 package com.tngtech.jenkins.notification.model
 
 class TtsConfig {
-    String lang = "en"
+    String lang = 'en'
     Closure message = { BuildInfo info ->
         "The build ${info.project.displayName} is ${info.result.toString().toLowerCase()}!"
     }

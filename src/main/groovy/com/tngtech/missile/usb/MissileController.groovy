@@ -6,11 +6,11 @@ class MissileController {
 
     private MissileLauncher launcher
 
-    public MissileController(MissileLauncher launcher) {
+    MissileController(MissileLauncher launcher) {
         this.launcher = launcher
     }
 
-    public void run(List<List> commands) {
+    void run(List<List> commands) {
         commands.each { command ->
             String method = command.head()
             def args = command.tail()
@@ -22,28 +22,28 @@ class MissileController {
         }
     }
 
-    public void move(Command directionCommand, long millis) throws Exception {
-        launcher.execute(directionCommand);
-        Thread.sleep(millis);
-        launcher.execute(Command.STOP);
+    void move(Command directionCommand, long millis) throws Exception {
+        launcher.execute(directionCommand)
+        Thread.sleep(millis)
+        launcher.execute(Command.STOP)
     }
 
-    public void fire() throws Exception {
-        launcher.execute(Command.FIRE);
-        Thread.sleep(4500);
+    void fire() throws Exception {
+        launcher.execute(Command.FIRE)
+        Thread.sleep(4500)
     }
 
-    public void ledOn() throws Exception {
-        launcher.execute(Command.LED_ON);
+    void ledOn() throws Exception {
+        launcher.execute(Command.LED_ON)
     }
 
-    public void ledOff() throws Exception {
-        launcher.execute(Command.LED_OFF);
+    void ledOff() throws Exception {
+        launcher.execute(Command.LED_OFF)
     }
 
-    public void zero() throws Exception {
-        move(Command.LEFT, 6000);
-        move(Command.DOWN, 1500);
+    void zero() throws Exception {
+        move(Command.LEFT, 6000)
+        move(Command.DOWN, 1500)
     }
 
 }

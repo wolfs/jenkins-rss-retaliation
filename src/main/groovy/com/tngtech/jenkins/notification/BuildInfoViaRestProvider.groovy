@@ -23,11 +23,11 @@ class BuildInfoViaRestProvider {
         def buildData = queryRestApiForJson(url, "tree=${BUILD_DATA}")
         def projectData = queryRestApiForJson(baseUrl, "tree=${PROJECT_DATA}")
 
-        return createBuildInfo(buildData, projectData)
+        extractBuildInfo(buildData, projectData)
     }
 
 
-    public List<BuildInfo> queryInitalData(String url) {
+    List<BuildInfo> queryInitalData(String url) {
         def viewData = queryRestApiForJson(
                 url,
                 "tree=jobs[${PROJECT_AND_LAST_BUILD}],${PROJECT_AND_LAST_BUILD}")
@@ -36,16 +36,16 @@ class BuildInfoViaRestProvider {
         if (viewData.jobs) {
             // Data from Views -> List of jobs
             buildInfos += viewData.jobs.findAll { it[BUILD_PERMA_LINK] }.collect { job ->
-                createBuildInfo(job[BUILD_PERMA_LINK], job)
+                extractBuildInfo(job[BUILD_PERMA_LINK], job)
             }
         } else {
             // Data from a single job
-            buildInfos += createBuildInfo(viewData[BUILD_PERMA_LINK], viewData)
+            buildInfos += extractBuildInfo(viewData[BUILD_PERMA_LINK], viewData)
         }
-        return buildInfos
+        buildInfos
     }
 
-    private BuildInfo createBuildInfo(buildData, projectData) {
+    private BuildInfo extractBuildInfo(buildData, projectData) {
         def culprits = buildData.culprits.collect { culprit ->
             new Culprit(id: culprit.id, fullName: culprit.fullName)
         }
@@ -53,7 +53,7 @@ class BuildInfoViaRestProvider {
 
         Project project = new Project(name: projectData.name, displayName: projectData.displayName)
 
-        return new BuildInfo(
+        new BuildInfo(
                 culprits: culprits,
                 result: result,
                 project: project,
@@ -64,7 +64,7 @@ class BuildInfoViaRestProvider {
     def queryRestApiForJson(String url, String queryString) {
         RESTClient client = new RESTClient(url)
         def resp = client.get(path: 'api/json', queryString: queryString)
-        return resp.responseData
+        resp.responseData
     }
 
     String extractBaseUrl(String url) {
@@ -72,6 +72,6 @@ class BuildInfoViaRestProvider {
 
         def match = matcher[0]
         String baseUrl = match[1]
-        return baseUrl
+        baseUrl
     }
 }

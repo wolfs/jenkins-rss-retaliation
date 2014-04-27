@@ -12,12 +12,12 @@ class BuildInfo {
 
 
     @Override
-    public String toString() {
-        return "BuildInfo{" +
-                "culprits=" + culprits.collect { it.id } +
-                ", project=" + project.name +
-                ", result=" + result +
-                ", buildNumber='" + buildNumber + '\'' +
-                '}';
+    String toString() {
+        'BuildInfo{' +
+                "culprits=${culprits*.id}}" +
+                ", project=${project.name}" +
+                ", result=${result}" +
+                ", buildNumber='${buildNumber}'" +
+                '}'
     }
 }

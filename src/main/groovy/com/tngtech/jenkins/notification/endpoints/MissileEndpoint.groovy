@@ -19,11 +19,11 @@ class MissileEndpoint extends BaseEndpoint {
         if (allBuildInfosHolder.hasResultChanged(buildInfo) &&
                 config.whenToShoot.contains(buildInfo.result)) {
             def culprits = buildInfo.culprits
-            shootAt(culprits.collect { it.id })
+            shootAt(culprits*.id)
         }
     }
 
-    public void shootAt(List<String> culprits) {
+    void shootAt(List<String> culprits) {
         def locations = config.locations
         def toShootAt = culprits.collect {
             locations[it]
@@ -35,7 +35,7 @@ class MissileEndpoint extends BaseEndpoint {
 
         def launcher = MissileLauncher.findMissileLauncher()
         if (launcher == null) {
-            throw new RuntimeException("Missile Launcher not connected!")
+            throw new IllegalStateException('Missile Launcher not connected!')
         } else {
             def controller = new MissileController(launcher)
             toShootAt.each { location ->

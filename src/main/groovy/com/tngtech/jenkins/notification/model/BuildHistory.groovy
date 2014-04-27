@@ -10,7 +10,7 @@ class BuildHistory {
     BuildHistory nextBuild(BuildInfo nextBuild) {
         lastBuild = currentBuild
         currentBuild = nextBuild
-        return this
+        this
     }
 
     Result getCurrentResult() {

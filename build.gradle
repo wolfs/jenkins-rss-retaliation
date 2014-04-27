@@ -2,7 +2,7 @@ apply plugin: 'groovy'
 apply plugin: 'idea'
 apply plugin: 'application'
 apply plugin: 'maven-publish'
-
+apply plugin: 'codenarc'
 
 mainClassName = "com.tngtech.jenkins.notification.Bootstrap"
 sourceCompatibility = "1.7"
@@ -29,6 +29,13 @@ sourceCompatibility = "1.7"
 //}
 //version = release.projectVersion
 version='0.9.9-SNAPSHOT'
+
+codenarc {
+    configFile = file('config/codenarc/rules.groovy')
+}
+
+codenarcTest.enabled = false
+
 
 repositories {
     mavenCentral()
