@@ -1,4 +1,4 @@
-[![Build Status](https://buildhive.cloudbees.com/job/jenkinsci/job/rss-retaliation/badge/icon)](https://buildhive.cloudbees.com/job/jenkinsci/job/rss-retaliation/)
+[![Build Status](https://wolfs.ci.cloudbees.com/buildStatus/icon?job=jenkins-rss-retaliation)](https://wolfs.ci.cloudbees.com/job/jenkins-rss-retaliation/)
 
 jenkins-rss-retaliation
 =======================
