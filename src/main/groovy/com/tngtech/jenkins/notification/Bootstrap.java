@@ -32,6 +32,8 @@ public class Bootstrap {
                 case "stalk":
                     new CamelApplication(config).run();
                     break;
+                default:
+                    throw new IllegalArgumentException("Could not parse commandline");
             }
         }
         if (args.length >= 2) {
@@ -44,11 +46,11 @@ public class Bootstrap {
                     break;
                 case "say":
                     TtsEndpoint ttsEndpoint = new TtsEndpoint(config.getTts());
-                    String text = "";
+                    StringBuilder text = new StringBuilder("");
                     for (int i = 1; i < args.length; i++) {
-                        text = text + " " + args[i];
+                        text.append(" ").append(args[i]);
                     }
-                    ttsEndpoint.say(text);
+                    ttsEndpoint.say(text.toString());
                     break;
                 default:
                     MissileLauncher.Command direction =
