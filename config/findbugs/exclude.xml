@@ -2,4 +2,10 @@
     <Match>
         <Class name="~.*closure.*" />
     </Match>
+    <Match>
+        <Class name="~.*BuildHistory.*" />
+    </Match>
+    <Match>
+        <Class name="~.*AllBuildInfosHolder.*" />
+    </Match>
 </FindBugsFilter>
