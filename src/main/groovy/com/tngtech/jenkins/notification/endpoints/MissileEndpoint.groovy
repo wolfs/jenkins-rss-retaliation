@@ -1,5 +1,6 @@
 package com.tngtech.jenkins.notification.endpoints
 
+import com.tngtech.jenkins.notification.model.BuildHistory
 import com.tngtech.jenkins.notification.model.BuildInfo
 import com.tngtech.jenkins.notification.model.MissileConfig
 import com.tngtech.missile.usb.MissileController
@@ -15,8 +16,9 @@ class MissileEndpoint extends BaseEndpoint {
     }
 
     @Override
-    void process(BuildInfo buildInfo) throws Exception {
-        if (allBuildInfosHolder.hasResultChanged(buildInfo) &&
+    void process(BuildHistory buildHistory) throws Exception {
+        BuildInfo buildInfo = buildHistory.currentBuild
+        if (buildHistory.hasResultChanged() &&
                 config.whenToShoot.contains(buildInfo.result)) {
             def culprits = buildInfo.culprits
             shootAt(culprits*.id)

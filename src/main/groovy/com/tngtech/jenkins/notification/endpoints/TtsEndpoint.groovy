@@ -1,6 +1,6 @@
 package com.tngtech.jenkins.notification.endpoints
 
-import com.tngtech.jenkins.notification.model.BuildInfo
+import com.tngtech.jenkins.notification.model.BuildHistory
 import com.tngtech.jenkins.notification.model.TtsConfig
 import javazoom.jl.player.Player
 import org.apache.commons.codec.Charsets
@@ -15,9 +15,9 @@ class TtsEndpoint extends BaseEndpoint {
     }
 
     @Override
-    void process(BuildInfo buildInfo) throws Exception {
-        if (allBuildInfosHolder.hasResultChanged(buildInfo)) {
-            String text = config.message.call(buildInfo)
+    void process(BuildHistory buildHistory) throws Exception {
+        if (buildHistory.hasResultChanged()) {
+            String text = config.message.call(buildHistory.currentBuild)
             if (text) {
                 say(text)
             }

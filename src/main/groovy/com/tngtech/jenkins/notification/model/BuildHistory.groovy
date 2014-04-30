@@ -1,16 +1,14 @@
 package com.tngtech.jenkins.notification.model
 
-import groovy.transform.Canonical
+import groovy.transform.Immutable
 
-@Canonical
+@Immutable(copyWith = true, knownImmutableClasses = [BuildInfo])
 class BuildHistory {
     BuildInfo currentBuild
     BuildInfo lastBuild
 
     BuildHistory nextBuild(BuildInfo nextBuild) {
-        lastBuild = currentBuild
-        currentBuild = nextBuild
-        this
+        this.copyWith(lastBuild: currentBuild, currentBuild: nextBuild)
     }
 
     Result getCurrentResult() {

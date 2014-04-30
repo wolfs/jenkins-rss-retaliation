@@ -13,28 +13,25 @@ class AllBuildInfosHolder {
     private Map<String, BuildHistory> jobsHistory = new HashMap<>()
 
     @Handler
-    void process(@Body BuildInfo buildInfo) {
+    synchronized BuildHistory process(@Body BuildInfo buildInfo) {
         updateJobsHistory(buildInfo)
     }
 
-    AllBuildInfos getAllBuildInfos() {
+    synchronized AllBuildInfos getAllBuildInfos() {
         new AllBuildInfos(new HashMap<String, BuildHistory>(jobsHistory))
     }
 
-    boolean hasResultChanged(BuildInfo buildInfo) {
-        getHistoryForBuildInfo(buildInfo).hasResultChanged()
-    }
-
-    private void updateJobsHistory(BuildInfo buildInfo) {
-        BuildHistory history = getHistoryForBuildInfo(buildInfo)
-        jobsHistory.put(getKey(buildInfo), history.nextBuild(buildInfo))
-        LOG.info('Updated Jobs History to \n{}', jobsHistory.collect { proj, hist ->
-            "${proj}: ${hist?.currentBuild?.result}"
+    private BuildHistory updateJobsHistory(BuildInfo buildInfo) {
+        BuildHistory updatedHistory = getUpdatedHistoryForBuildInfo(buildInfo)
+        jobsHistory.put(getKey(buildInfo), updatedHistory)
+        LOG.info('Updated Jobs History to \n{}', jobsHistory.collect { project, history ->
+            "${project}: ${history?.currentBuild?.result}"
         }.join('\n'))
+        updatedHistory
     }
 
-    private BuildHistory getHistoryForBuildInfo(BuildInfo buildInfo) {
-        jobsHistory.get(getKey(buildInfo)) ?: new BuildHistory()
+    private BuildHistory getUpdatedHistoryForBuildInfo(BuildInfo buildInfo) {
+        new BuildHistory(buildInfo, jobsHistory.get(getKey(buildInfo))?.currentBuild)
     }
 
     private String getKey(BuildInfo buildInfo) {

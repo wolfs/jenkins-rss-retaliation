@@ -21,10 +21,8 @@ class AllBuildInfosHolderTest extends Specification {
     }
 
     private BuildHistory historyFor(String projectName, Result... results) {
-        BuildHistory history = new BuildHistory()
-        results.each { result -> history.nextBuild(buildInfoFor(projectName, result)) }
-
-        history
+        BuildHistory history = new BuildHistory(null, null)
+        results.inject(history) { currentHistory, result -> currentHistory.nextBuild(buildInfoFor(projectName, result)) }
     }
 
     def BuildInfo buildInfoFor(String project, Result result) {

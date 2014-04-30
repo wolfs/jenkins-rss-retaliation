@@ -18,10 +18,10 @@ Command Line
 
 * stalk - Polls the rss feed an triggers the feedback device(s)
 * say <text> - uses Google Text To Speech to say a word
-* shootAt <userId> - triggers the missile launcher to shoot at he given culprits
+* shootAt <userId> - triggers the missile launcher to shoot at the given culprits
 * left 1000 - moves the missile launcher 1000 milliseconds to the left
-* right|up|down 500 - same with other directions
-* ledOn|ledOff - switches the led on and off
+* right | up | down 500 - same with other directions
+* ledOn | ledOff - switches the led on and off
 * fire - fires the missile launcher
 
 Example configuration

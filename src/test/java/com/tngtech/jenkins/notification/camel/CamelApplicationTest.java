@@ -2,10 +2,7 @@ package com.tngtech.jenkins.notification.camel;
 
 import com.tngtech.jenkins.notification.BuildInfoViaRestProvider;
 import com.tngtech.jenkins.notification.endpoints.FeedbackEndpoint;
-import com.tngtech.jenkins.notification.model.BuildInfo;
-import com.tngtech.jenkins.notification.model.Config;
-import com.tngtech.jenkins.notification.model.Project;
-import com.tngtech.jenkins.notification.model.Result;
+import com.tngtech.jenkins.notification.model.*;
 import org.apache.abdera.i18n.iri.IRI;
 import org.apache.abdera.model.Entry;
 import org.apache.camel.CamelContext;
@@ -56,6 +53,7 @@ public class CamelApplicationTest extends CamelTestSupport {
     private EntryToBuildInfo entryToBuildInfo;
     @Mock
     private BuildInfo buildInfo;
+    private BuildHistory buildHistory = new BuildHistory(null, null);
     @Mock
     private Entry entry;
     @Mock
@@ -99,6 +97,7 @@ public class CamelApplicationTest extends CamelTestSupport {
 
         given(entry.getId()).willReturn(new IRI(UUID.randomUUID().toString()));
         given(entryToBuildInfo.process(entry)).willReturn(buildInfo);
+        given(statusHolder.process(buildInfo)).willReturn(buildHistory);
 
         context.getRouteDefinitions().get(0).adviceWith(context, new AdviceWithRouteBuilder() {
             @Override
@@ -144,12 +143,12 @@ public class CamelApplicationTest extends CamelTestSupport {
 
         producer.sendBody(entry);
 
-        verify(missileEndpoint, timeout(DEFAULT_TIMEOUT_MILLIS)).process(buildInfo);
-        verify(someEndpoint, never()).process(buildInfo);
+        verify(missileEndpoint, timeout(DEFAULT_TIMEOUT_MILLIS)).process(buildHistory);
+        verify(someEndpoint, never()).process(buildHistory);
 
         missileCountdown.countDown();
 
-        verify(someEndpoint, timeout(DEFAULT_TIMEOUT_MILLIS)).process(buildInfo);
+        verify(someEndpoint, timeout(DEFAULT_TIMEOUT_MILLIS)).process(buildHistory);
     }
 
     @Test
@@ -161,8 +160,8 @@ public class CamelApplicationTest extends CamelTestSupport {
 
         producer.sendBody(entry);
 
-        verify(missileEndpoint, timeout(DEFAULT_TIMEOUT_MILLIS)).process(buildInfo);
-        verify(someEndpoint, timeout(DEFAULT_TIMEOUT_MILLIS)).process(buildInfo);
+        verify(missileEndpoint, timeout(DEFAULT_TIMEOUT_MILLIS)).process(buildHistory);
+        verify(someEndpoint, timeout(DEFAULT_TIMEOUT_MILLIS)).process(buildHistory);
 
         missileCountdown.countDown();
         someCountdown.countDown();
@@ -177,8 +176,8 @@ public class CamelApplicationTest extends CamelTestSupport {
         producer.sendBody(entry);
         producer.sendBody(entry);
 
-        verify(missileEndpoint, timeout(DEFAULT_TIMEOUT_MILLIS)).process(buildInfo);
-        verify(someEndpoint, timeout(DEFAULT_TIMEOUT_MILLIS)).process(buildInfo);
+        verify(missileEndpoint, timeout(DEFAULT_TIMEOUT_MILLIS)).process(buildHistory);
+        verify(someEndpoint, timeout(DEFAULT_TIMEOUT_MILLIS)).process(buildHistory);
 
         assertTrue(notify.matches(DEFAULT_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS));
 
@@ -187,15 +186,15 @@ public class CamelApplicationTest extends CamelTestSupport {
 
     @Test
     public void on_error_the_message_is_added_to_idRepo() throws Exception {
-        willThrow(NullPointerException.class).given(missileEndpoint).process(any(BuildInfo.class));
+        willThrow(NullPointerException.class).given(missileEndpoint).process(any(BuildHistory.class));
 
         NotifyBuilder notify = new NotifyBuilder(context).from("direct:atom").whenDone(2).create();
 
         context.start();
 
         producer.sendBody(entry);
-        verify(missileEndpoint, timeout(DEFAULT_TIMEOUT_MILLIS)).process(buildInfo);
-        verify(someEndpoint, timeout(DEFAULT_TIMEOUT_MILLIS)).process(buildInfo);
+        verify(missileEndpoint, timeout(DEFAULT_TIMEOUT_MILLIS)).process(buildHistory);
+        verify(someEndpoint, timeout(DEFAULT_TIMEOUT_MILLIS)).process(buildHistory);
 
         producer.sendBody(entry);
 
@@ -212,7 +211,7 @@ public class CamelApplicationTest extends CamelTestSupport {
                 latch.await();
                 return null;
             }
-        }).given(mockEndpoint).process(buildInfo);
+        }).given(mockEndpoint).process(buildHistory);
     }
 
 

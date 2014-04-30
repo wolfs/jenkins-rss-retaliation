@@ -4,7 +4,7 @@ import static com.tngtech.jenkins.notification.model.Result.*
 import static java.nio.file.Files.exists
 
 import com.tngtech.jenkins.notification.camel.AllBuildInfosHolder
-import com.tngtech.jenkins.notification.model.BuildInfo
+import com.tngtech.jenkins.notification.model.BuildHistory
 import com.tngtech.jenkins.notification.model.Result
 import com.tngtech.jenkins.notification.model.TrafficLightConfig
 
@@ -28,7 +28,7 @@ class TrafficLightEndpoint extends BaseEndpoint {
     }
 
     @Override
-    void process(BuildInfo buildInfo) throws Exception {
+    void process(BuildHistory buildHistory) throws Exception {
         updateLight()
     }
 

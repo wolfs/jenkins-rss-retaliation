@@ -32,6 +32,7 @@ public class CamelApplication extends Main {
     private Config config;
     private BuildInfoViaRestProvider buildInfoViaRestProvider = new BuildInfoViaRestProvider();
     private AllBuildInfosHolder buildJobsStatusHolder = new AllBuildInfosHolder();
+    Date lastUpdate = new Date();
 
     private CamelApplication() {
     }
@@ -91,26 +92,26 @@ public class CamelApplication extends Main {
     RouteBuilder createRoutes() {
         return new RouteBuilder() {
             public void configure() throws Exception {
-                Date date = new Date();
-                String dateString = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").format(date);
-
-                fromF("atom:%s?splitEntries=true&lastUpdate=%s&throttleEntries=false&consumer.delay=%d",
+                String dateString = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").format(lastUpdate);
+                fromF("atom:%s?splitEntries=true&lastUpdate=%s&sortEntries=true&throttleEntries=false&consumer.delay=%d",
                         config.getRssFeedUrl(), dateString, config.getPollInterval())
                         .id("atom")
                         .idempotentConsumer(
                                 simple("${body.id}"),
                                 memoryIdempotentRepository())
                         .removeOnFailure(false)
+                        .to("seda:feeds");
+
+                MulticastDefinition multicast = from("seda:feeds")
                         .toF("bean:%s", ENTRY_TO_BUILD_INFO_BEAN)
                         .toF("bean:%s", BUILD_JOB_STATUS_HOLDER)
                         .to("log:com.tngtech.jenkins.notification?showBody=true&multiline=true")
-                        .to("seda:feeds");
+                        .multicast();
 
                 List<String> endpoints = new ArrayList<>();
                 for (String endpoint : config.getEndpoints()) {
                     endpoints.add(String.format("bean:%s", endpoint));
                 }
-                MulticastDefinition multicast = from("seda:feeds").multicast();
                 if (config.isFeedbackInParallel()) {
                     multicast.parallelProcessing();
                 }

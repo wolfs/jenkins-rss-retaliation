@@ -1,4 +1,4 @@
-rssFeedUrl='http://localhost:8080/rssFailed' // rss-feed from Jenkins
+rssFeedUrl='http://localhost:8080/rssAll' // rss-feed from Jenkins
 pollInterval=10000 // Poll interval for the rss-Feed
 feedbackDevices=['tts'] // Active feedback devices. Possible entries: missile, tts
 feedbackInParallel=false // Should the feedback devices be triggered in parallel or sequentially?
