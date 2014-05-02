@@ -12,7 +12,7 @@ import java.nio.file.Paths
 
 class TrafficLightEndpoint extends BaseEndpoint {
 
-    private Map<Result, String> statusCommandMap = new HashMap<>()
+    private Map<Result, String> statusCommandMap = [:]
 
     private String binaryPath
     private Result trafficLightStatus

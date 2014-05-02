@@ -10,15 +10,19 @@ import org.slf4j.LoggerFactory
 
 class AllBuildInfosHolder {
     private static final Logger LOG = LoggerFactory.getLogger(AllBuildInfosHolder)
-    private Map<String, BuildHistory> jobsHistory = new HashMap<>()
+    private Map<String, BuildHistory> jobsHistory = [:]
 
     @Handler
-    synchronized BuildHistory process(@Body BuildInfo buildInfo) {
-        updateJobsHistory(buildInfo)
+    BuildHistory process(@Body BuildInfo buildInfo) {
+        synchronized (jobsHistory) {
+            updateJobsHistory(buildInfo)
+        }
     }
 
-    synchronized AllBuildInfos getAllBuildInfos() {
-        new AllBuildInfos(new HashMap<String, BuildHistory>(jobsHistory))
+    AllBuildInfos getAllBuildInfos() {
+        synchronized (jobsHistory) {
+            new AllBuildInfos(new HashMap<String, BuildHistory>(jobsHistory))
+        }
     }
 
     private BuildHistory updateJobsHistory(BuildInfo buildInfo) {

@@ -37,7 +37,9 @@ public class UsbTryout {
         if (device.isUsbHub())
         {
             UsbHub hub = (UsbHub) device;
-            for (UsbDevice child : (List<UsbDevice>) hub.getAttachedUsbDevices())
+            @SuppressWarnings("unchecked")
+            List<UsbDevice> attachedUsbDevices = (List<UsbDevice>) hub.getAttachedUsbDevices();
+            for (UsbDevice child : attachedUsbDevices)
             {
                 dump(child);
             }

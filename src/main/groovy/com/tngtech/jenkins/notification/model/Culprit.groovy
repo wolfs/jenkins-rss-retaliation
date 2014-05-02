@@ -1,8 +1,8 @@
 package com.tngtech.jenkins.notification.model
 
-import groovy.transform.Canonical
+import groovy.transform.Immutable
 
-@Canonical
+@Immutable
 class Culprit {
     String id
     String fullName

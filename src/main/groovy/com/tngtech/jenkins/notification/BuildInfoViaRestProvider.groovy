@@ -26,7 +26,6 @@ class BuildInfoViaRestProvider {
         extractBuildInfo(buildData, projectData)
     }
 
-
     List<BuildInfo> queryInitalData(String url) {
         def viewData = queryRestApiForJson(
                 url,

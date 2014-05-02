@@ -10,7 +10,6 @@ class BuildInfo {
     String buildNumber
     List<Culprit> culprits
 
-
     @Override
     String toString() {
         'BuildInfo{' +

@@ -10,7 +10,6 @@ class MissileEndpoint extends BaseEndpoint {
 
     private MissileConfig config
 
-
     MissileEndpoint(MissileConfig config) {
         this.config = config
     }
@@ -31,9 +30,7 @@ class MissileEndpoint extends BaseEndpoint {
             locations[it]
         }.findAll().toSet()
 
-        if (!toShootAt) {
-            toShootAt = [locations?.unknown].findAll()
-        }
+        toShootAt = toShootAt ?: [locations?.unknown].findAll()
 
         def launcher = MissileLauncher.findMissileLauncher()
         if (launcher == null) {
