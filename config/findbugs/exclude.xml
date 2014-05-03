@@ -8,4 +8,7 @@
     <Match>
         <Class name="~.*AllBuildInfosHolder.*" />
     </Match>
+    <Match>
+        <Bug pattern="EQ_UNUSUAL"/>
+    </Match>
 </FindBugsFilter>
