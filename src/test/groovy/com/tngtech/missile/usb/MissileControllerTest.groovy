@@ -7,7 +7,6 @@ import spock.lang.Specification
 
 class MissileControllerTest extends Specification {
 
-
     def 'Commands are run from List'() {
         setup:
         def launcher = Mock(MissileLauncher)
@@ -45,7 +44,7 @@ class MissileControllerTest extends Specification {
 
     }
 
-    @Ignore("Needs a real launcher")
+    @Ignore('Needs a real launcher')
     def commands_are_ran() {
         when:
         def controller = createController()

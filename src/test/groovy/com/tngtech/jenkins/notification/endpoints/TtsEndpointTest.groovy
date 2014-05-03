@@ -10,7 +10,11 @@ class TtsEndpointTest extends Specification {
     def 'Output is read from configuration'() {
         when:
         def tts = new TtsEndpoint(new TtsConfig())
-        tts.process(new BuildHistory(new BuildInfo(project: new Project(displayName: 'some-project'), result: Result.SUCCESS), null))
+        tts.process(new BuildHistory(
+                new BuildInfo(
+                        project: new Project(displayName: 'some-project'),
+                        result: Result.SUCCESS),
+                null))
 
         then:
         println 'You heard a sound'

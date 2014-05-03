@@ -4,14 +4,15 @@ import org.apache.abdera.i18n.iri.IRI
 import spock.lang.Ignore
 import spock.lang.Specification
 
-public class BuildInfoViaRestProviderTest extends Specification {
+class BuildInfoViaRestProviderTest extends Specification {
 
     def 'Build Id should be extracted from URL'() {
         when:
-        BuildInfoViaRestProvider buildInfoViaRestProvider = new BuildInfoViaRestProvider();
+        BuildInfoViaRestProvider buildInfoViaRestProvider = new BuildInfoViaRestProvider()
 
         then:
-        buildInfoViaRestProvider.extractBaseUrl('http://localhost:8080/job/downstream/13/') == 'http://localhost:8080/job/downstream/'
+        buildInfoViaRestProvider.extractBaseUrl('http://localhost:8080/job/downstream/13/') ==
+                'http://localhost:8080/job/downstream/'
     }
 
     @Ignore

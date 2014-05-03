@@ -1,6 +1,5 @@
 package com.tngtech.jenkins.notification.model
 
-import com.tngtech.jenkins.notification.model.Result
 import spock.lang.Specification
 import spock.lang.Unroll
 

@@ -35,7 +35,9 @@ codenarc {
     configFile = file('config/codenarc/rules.groovy')
 }
 
-codenarcTest.enabled = false
+codenarcTest {
+    configFile = file('config/codenarc/testRules.groovy')
+}
 
 findbugs {
     sourceSets = [sourceSets.main]

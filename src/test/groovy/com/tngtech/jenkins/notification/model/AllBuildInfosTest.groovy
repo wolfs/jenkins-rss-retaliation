@@ -1,24 +1,22 @@
 package com.tngtech.jenkins.notification.model
 
+import static com.tngtech.jenkins.notification.model.Result.*
+
 import spock.lang.Specification
 import spock.lang.Unroll
-
-import static com.tngtech.jenkins.notification.model.Result.ABORTED
-import static com.tngtech.jenkins.notification.model.Result.FAILURE
-import static com.tngtech.jenkins.notification.model.Result.NOT_BUILT
-import static com.tngtech.jenkins.notification.model.Result.SUCCESS
-import static com.tngtech.jenkins.notification.model.Result.UNSTABLE
 
 class AllBuildInfosTest extends Specification {
     @Unroll
     def 'Overall result for #results is #overallResult'(List<Result> results, Result overallResult) {
         given:
         int count = 0
-        def map = results.collectEntries { ["project${count++}", new BuildHistory([:]).nextBuild(new BuildInfo(result: it))] }
-        def buildJobsStatus = new AllBuildInfos(map);
+        def map = results.collectEntries {
+            ["project${count++}", new BuildHistory([:]).nextBuild(new BuildInfo(result: it))]
+        }
+        def buildJobsStatus = new AllBuildInfos(map)
 
         when:
-        def status = buildJobsStatus.overallResult;
+        def status = buildJobsStatus.overallResult
 
         then:
         status == overallResult
