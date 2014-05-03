@@ -29,7 +29,7 @@ ruleset {
     }
     ruleset('rulesets/naming.xml')
     ruleset('rulesets/size.xml') {
-        exclude CrapMetric
+        exclude 'CrapMetric'
     }
     ruleset('rulesets/serialization.xml')
     ruleset('rulesets/unnecessary.xml')
