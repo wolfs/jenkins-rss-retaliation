@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <title>Alle all builds</title>
+    <link type="text/html" href="http://localhost:8080/" rel="alternate"/>
+    <updated>2014-04-30T21:20:30Z</updated>
+    <author>
+        <name>Jenkins Server</name>
+    </author>
+    <id>urn:uuid:903deee0-7bfa-11db-9fe1-0800200c9a66</id>
+    <entry>
+        <title>resultSetterViaGit #23 (1 Test schlägt immer noch fehl)</title>
+        <link type="text/html" href="http://localhost:8080/job/resultSetterViaGit/23/" rel="alternate"/>
+        <id>tag:hudson.dev.java.net,2014:resultSetterViaGit:2014-04-30_23-20-30</id>
+        <published>2014-04-30T21:20:30Z</published>
+        <updated>2014-04-30T21:20:30Z</updated>
+    </entry>
+    <entry>
+        <title>resultSetter #33 (Defekt seit diesem Build.)</title>
+        <link type="text/html" href="http://localhost:8080/job/resultSetter/33/" rel="alternate"/>
+        <id>tag:hudson.dev.java.net,2014:resultSetter:2014-04-30_23-15-26</id>
+        <published>2014-04-30T21:15:26Z</published>
+        <updated>2014-04-30T21:15:26Z</updated>
+    </entry>
+    <entry>
+        <title>resultSetter #32 (Wieder normal)</title>
+        <link type="text/html" href="http://localhost:8080/job/resultSetter/32/" rel="alternate"/>
+        <id>tag:hudson.dev.java.net,2014:resultSetter:2014-04-30_23-15-14</id>
+        <published>2014-04-30T21:15:14Z</published>
+        <updated>2014-04-30T21:15:14Z</updated>
+    </entry>
+    <entry>
+        <title>resultSetter #31 (1 Test schlägt immer noch fehl)</title>
+        <link type="text/html" href="http://localhost:8080/job/resultSetter/31/" rel="alternate"/>
+        <id>tag:hudson.dev.java.net,2014:resultSetter:2014-04-30_23-14-55</id>
+        <published>2014-04-30T21:14:55Z</published>
+        <updated>2014-04-30T21:14:55Z</updated>
+    </entry>
+    <entry>
+        <title>resultSetter #30 (1 fehlgeschlagener Test)</title>
+        <link type="text/html" href="http://localhost:8080/job/resultSetter/30/" rel="alternate"/>
+        <id>tag:hudson.dev.java.net,2014:resultSetter:2014-04-30_22-52-39</id>
+        <published>2014-04-30T20:52:39Z</published>
+        <updated>2014-04-30T20:52:39Z</updated>
+    </entry>
+    <entry>
+        <title>resultSetter #29 (Defekt seit Build #28)</title>
+        <link type="text/html" href="http://localhost:8080/job/resultSetter/29/" rel="alternate"/>
+        <id>tag:hudson.dev.java.net,2014:resultSetter:2014-04-30_22-52-26</id>
+        <published>2014-04-30T20:52:26Z</published>
+        <updated>2014-04-30T20:52:26Z</updated>
+    </entry>
+    <entry>
+        <title>resultSetter #28 (Defekt seit diesem Build.)</title>
+        <link type="text/html" href="http://localhost:8080/job/resultSetter/28/" rel="alternate"/>
+        <id>tag:hudson.dev.java.net,2014:resultSetter:2014-04-30_22-50-28</id>
+        <published>2014-04-30T20:50:28Z</published>
+        <updated>2014-04-30T20:50:28Z</updated>
+    </entry>
+    <entry>
+        <title>resultSetterViaGit #22 (1 Test schlägt immer noch fehl)</title>
+        <link type="text/html" href="http://localhost:8080/job/resultSetterViaGit/22/" rel="alternate"/>
+        <id>tag:hudson.dev.java.net,2014:resultSetterViaGit:2014-04-25_12-51-05</id>
+        <published>2014-04-25T10:51:05Z</published>
+        <updated>2014-04-25T10:51:05Z</updated>
+    </entry>
+    <entry>
+        <title>resultSetterViaGit #21 (1 fehlgeschlagener Test)</title>
+        <link type="text/html" href="http://localhost:8080/job/resultSetterViaGit/21/" rel="alternate"/>
+        <id>tag:hudson.dev.java.net,2014:resultSetterViaGit:2014-04-25_12-49-32</id>
+        <published>2014-04-25T10:49:32Z</published>
+        <updated>2014-04-25T10:49:32Z</updated>
+    </entry>
+    <entry>
+        <title>resultSetterViaGit #20 (Defekt seit Build #19)</title>
+        <link type="text/html" href="http://localhost:8080/job/resultSetterViaGit/20/" rel="alternate"/>
+        <id>tag:hudson.dev.java.net,2014:resultSetterViaGit:2014-04-25_12-49-11</id>
+        <published>2014-04-25T10:49:11Z</published>
+        <updated>2014-04-25T10:49:11Z</updated>
+    </entry>
+    <entry>
+        <title>resultSetterViaGit #19 (Defekt seit diesem Build.)</title>
+        <link type="text/html" href="http://localhost:8080/job/resultSetterViaGit/19/" rel="alternate"/>
+        <id>tag:hudson.dev.java.net,2014:resultSetterViaGit:2014-04-25_12-48-43</id>
+        <published>2014-04-25T10:48:43Z</published>
+        <updated>2014-04-25T10:48:43Z</updated>
+    </entry>
+    <entry>
+        <title>resultSetter #27 (1 fehlgeschlagener Test)</title>
+        <link type="text/html" href="http://localhost:8080/job/resultSetter/27/" rel="alternate"/>
+        <id>tag:hudson.dev.java.net,2014:resultSetter:2014-04-25_12-48-09</id>
+        <published>2014-04-25T10:48:09Z</published>
+        <updated>2014-04-25T10:48:09Z</updated>
+    </entry>
+    <entry>
+        <title>resultSetter #26 (Defekt seit diesem Build.)</title>
+        <link type="text/html" href="http://localhost:8080/job/resultSetter/26/" rel="alternate"/>
+        <id>tag:hudson.dev.java.net,2014:resultSetter:2014-04-25_12-47-07</id>
+        <published>2014-04-25T10:47:07Z</published>
+        <updated>2014-04-25T10:47:07Z</updated>
+    </entry>
+    <entry>
+        <title>resultSetter #25 (1 fehlgeschlagener Test)</title>
+        <link type="text/html" href="http://localhost:8080/job/resultSetter/25/" rel="alternate"/>
+        <id>tag:hudson.dev.java.net,2014:resultSetter:2014-04-25_12-24-07</id>
+        <published>2014-04-25T10:24:07Z</published>
+        <updated>2014-04-25T10:24:07Z</updated>
+    </entry>
+    <entry>
+        <title>resultSetter #24 (Defekt seit diesem Build.)</title>
+        <link type="text/html" href="http://localhost:8080/job/resultSetter/24/" rel="alternate"/>
+        <id>tag:hudson.dev.java.net,2014:resultSetter:2014-04-25_12-23-25</id>
+        <published>2014-04-25T10:23:25Z</published>
+        <updated>2014-04-25T10:23:25Z</updated>
+    </entry>
+    <entry>
+        <title>resultSetter #23 (1 Test neu fehlgeschlagen)</title>
+        <link type="text/html" href="http://localhost:8080/job/resultSetter/23/" rel="alternate"/>
+        <id>tag:hudson.dev.java.net,2014:resultSetter:2014-04-25_12-23-05</id>
+        <published>2014-04-25T10:23:05Z</published>
+        <updated>2014-04-25T10:23:05Z</updated>
+    </entry>
+    <entry>
+        <title>resultSetterViaGit #18 (1 Test schlägt immer noch fehl)</title>
+        <link type="text/html" href="http://localhost:8080/job/resultSetterViaGit/18/" rel="alternate"/>
+        <id>tag:hudson.dev.java.net,2014:resultSetterViaGit:2014-04-25_12-22-47</id>
+        <published>2014-04-25T10:22:47Z</published>
+        <updated>2014-04-25T10:22:47Z</updated>
+    </entry>
+    <entry>
+        <title>resultSetterViaGit #17 (1 Test schlägt immer noch fehl)</title>
+        <link type="text/html" href="http://localhost:8080/job/resultSetterViaGit/17/" rel="alternate"/>
+        <id>tag:hudson.dev.java.net,2014:resultSetterViaGit:2014-04-25_11-24-08</id>
+        <published>2014-04-25T09:24:08Z</published>
+        <updated>2014-04-25T09:24:08Z</updated>
+    </entry>
+    <entry>
+        <title>resultSetterViaGit #16 (1 Test schlägt immer noch fehl)</title>
+        <link type="text/html" href="http://localhost:8080/job/resultSetterViaGit/16/" rel="alternate"/>
+        <id>tag:hudson.dev.java.net,2014:resultSetterViaGit:2014-04-25_11-22-58</id>
+        <published>2014-04-25T09:22:58Z</published>
+        <updated>2014-04-25T09:22:58Z</updated>
+    </entry>
+    <entry>
+        <title>resultSetterViaGit #15 (1 Test schlägt immer noch fehl)</title>
+        <link type="text/html" href="http://localhost:8080/job/resultSetterViaGit/15/" rel="alternate"/>
+        <id>tag:hudson.dev.java.net,2014:resultSetterViaGit:2014-04-25_11-22-10</id>
+        <published>2014-04-25T09:22:10Z</published>
+        <updated>2014-04-25T09:22:10Z</updated>
+    </entry>
+    <entry>
+        <title>resultSetterViaGit #14 (1 Test schlägt immer noch fehl)</title>
+        <link type="text/html" href="http://localhost:8080/job/resultSetterViaGit/14/" rel="alternate"/>
+        <id>tag:hudson.dev.java.net,2014:resultSetterViaGit:2014-04-25_11-21-48</id>
+        <published>2014-04-25T09:21:48Z</published>
+        <updated>2014-04-25T09:21:48Z</updated>
+    </entry>
+    <entry>
+        <title>resultSetterViaGit #13 (1 Test schlägt immer noch fehl)</title>
+        <link type="text/html" href="http://localhost:8080/job/resultSetterViaGit/13/" rel="alternate"/>
+        <id>tag:hudson.dev.java.net,2014:resultSetterViaGit:2014-04-25_11-19-00</id>
+        <published>2014-04-25T09:19:00Z</published>
+        <updated>2014-04-25T09:19:00Z</updated>
+    </entry>
+    <entry>
+        <title>resultSetter #22 (Stabil)</title>
+        <link type="text/html" href="http://localhost:8080/job/resultSetter/22/" rel="alternate"/>
+        <id>tag:hudson.dev.java.net,2014:resultSetter:2014-04-25_11-18-40</id>
+        <published>2014-04-25T09:18:40Z</published>
+        <updated>2014-04-25T09:18:40Z</updated>
+    </entry>
+    <entry>
+        <title>resultSetter #21 (Stabil)</title>
+        <link type="text/html" href="http://localhost:8080/job/resultSetter/21/" rel="alternate"/>
+        <id>tag:hudson.dev.java.net,2014:resultSetter:2014-04-25_11-15-09</id>
+        <published>2014-04-25T09:15:09Z</published>
+        <updated>2014-04-25T09:15:09Z</updated>
+    </entry>
+    <entry>
+        <title>resultSetter #20 (Stabil)</title>
+        <link type="text/html" href="http://localhost:8080/job/resultSetter/20/" rel="alternate"/>
+        <id>tag:hudson.dev.java.net,2014:resultSetter:2014-04-25_11-10-52</id>
+        <published>2014-04-25T09:10:52Z</published>
+        <updated>2014-04-25T09:10:52Z</updated>
+    </entry>
+    <entry>
+        <title>resultSetter #19 (Wieder normal)</title>
+        <link type="text/html" href="http://localhost:8080/job/resultSetter/19/" rel="alternate"/>
+        <id>tag:hudson.dev.java.net,2014:resultSetter:2014-04-25_11-08-34</id>
+        <published>2014-04-25T09:08:34Z</published>
+        <updated>2014-04-25T09:08:34Z</updated>
+    </entry>
+    <entry>
+        <title>resultSetter #18 (Defekt seit Build #17)</title>
+        <link type="text/html" href="http://localhost:8080/job/resultSetter/18/" rel="alternate"/>
+        <id>tag:hudson.dev.java.net,2014:resultSetter:2014-04-25_11-06-14</id>
+        <published>2014-04-25T09:06:14Z</published>
+        <updated>2014-04-25T09:06:14Z</updated>
+    </entry>
+    <entry>
+        <title>resultSetter #17 (Defekt seit diesem Build.)</title>
+        <link type="text/html" href="http://localhost:8080/job/resultSetter/17/" rel="alternate"/>
+        <id>tag:hudson.dev.java.net,2014:resultSetter:2014-04-25_11-06-01</id>
+        <published>2014-04-25T09:06:01Z</published>
+        <updated>2014-04-25T09:06:01Z</updated>
+    </entry>
+    <entry>
+        <title>resultSetter #16 (Wieder normal)</title>
+        <link type="text/html" href="http://localhost:8080/job/resultSetter/16/" rel="alternate"/>
+        <id>tag:hudson.dev.java.net,2014:resultSetter:2014-04-25_11-05-48</id>
+        <published>2014-04-25T09:05:48Z</published>
+        <updated>2014-04-25T09:05:48Z</updated>
+    </entry>
+    <entry>
+        <title>resultSetter #15 (Defekt seit diesem Build.)</title>
+        <link type="text/html" href="http://localhost:8080/job/resultSetter/15/" rel="alternate"/>
+        <id>tag:hudson.dev.java.net,2014:resultSetter:2014-04-25_11-03-51</id>
+        <published>2014-04-25T09:03:51Z</published>
+        <updated>2014-04-25T09:03:51Z</updated>
+    </entry>
+    <entry>
+        <title>resultSetterViaGit #12 (1 Test schlägt immer noch fehl)</title>
+        <link type="text/html" href="http://localhost:8080/job/resultSetterViaGit/12/" rel="alternate"/>
+        <id>tag:hudson.dev.java.net,2014:resultSetterViaGit:2014-04-25_11-02-45</id>
+        <published>2014-04-25T09:02:45Z</published>
+        <updated>2014-04-25T09:02:45Z</updated>
+    </entry>
+    <entry>
+        <title>resultSetterViaGit #11 (1 fehlgeschlagener Test)</title>
+        <link type="text/html" href="http://localhost:8080/job/resultSetterViaGit/11/" rel="alternate"/>
+        <id>tag:hudson.dev.java.net,2014:resultSetterViaGit:2014-04-25_11-01-46</id>
+        <published>2014-04-25T09:01:46Z</published>
+        <updated>2014-04-25T09:01:46Z</updated>
+    </entry>
+    <entry>
+        <title>resultSetterViaGit #10 (Defekt seit Build #4)</title>
+        <link type="text/html" href="http://localhost:8080/job/resultSetterViaGit/10/" rel="alternate"/>
+        <id>tag:hudson.dev.java.net,2014:resultSetterViaGit:2014-04-25_11-01-02</id>
+        <published>2014-04-25T09:01:02Z</published>
+        <updated>2014-04-25T09:01:02Z</updated>
+    </entry>
+    <entry>
+        <title>resultSetterViaGit #9 (Defekt seit Build #4)</title>
+        <link type="text/html" href="http://localhost:8080/job/resultSetterViaGit/9/" rel="alternate"/>
+        <id>tag:hudson.dev.java.net,2014:resultSetterViaGit:2014-04-24_23-37-15</id>
+        <published>2014-04-24T21:37:15Z</published>
+        <updated>2014-04-24T21:37:15Z</updated>
+    </entry>
+    <entry>
+        <title>resultSetterViaGit #8 (Defekt seit Build #4)</title>
+        <link type="text/html" href="http://localhost:8080/job/resultSetterViaGit/8/" rel="alternate"/>
+        <id>tag:hudson.dev.java.net,2014:resultSetterViaGit:2014-04-24_23-35-32</id>
+        <published>2014-04-24T21:35:32Z</published>
+        <updated>2014-04-24T21:35:32Z</updated>
+    </entry>
+    <entry>
+        <title>resultSetterViaGit #7 (Defekt seit Build #4)</title>
+        <link type="text/html" href="http://localhost:8080/job/resultSetterViaGit/7/" rel="alternate"/>
+        <id>tag:hudson.dev.java.net,2014:resultSetterViaGit:2014-04-24_23-23-39</id>
+        <published>2014-04-24T21:23:39Z</published>
+        <updated>2014-04-24T21:23:39Z</updated>
+    </entry>
+    <entry>
+        <title>resultSetterViaGit #6 (Defekt seit Build #4)</title>
+        <link type="text/html" href="http://localhost:8080/job/resultSetterViaGit/6/" rel="alternate"/>
+        <id>tag:hudson.dev.java.net,2014:resultSetterViaGit:2014-04-24_23-21-50</id>
+        <published>2014-04-24T21:21:50Z</published>
+        <updated>2014-04-24T21:21:50Z</updated>
+    </entry>
+    <entry>
+        <title>resultSetterViaGit #5 (Defekt seit Build #4)</title>
+        <link type="text/html" href="http://localhost:8080/job/resultSetterViaGit/5/" rel="alternate"/>
+        <id>tag:hudson.dev.java.net,2014:resultSetterViaGit:2014-04-24_23-18-29</id>
+        <published>2014-04-24T21:18:29Z</published>
+        <updated>2014-04-24T21:18:29Z</updated>
+    </entry>
+    <entry>
+        <title>resultSetterViaGit #4 (Defekt seit diesem Build.)</title>
+        <link type="text/html" href="http://localhost:8080/job/resultSetterViaGit/4/" rel="alternate"/>
+        <id>tag:hudson.dev.java.net,2014:resultSetterViaGit:2014-04-24_22-26-31</id>
+        <published>2014-04-24T20:26:31Z</published>
+        <updated>2014-04-24T20:26:31Z</updated>
+    </entry>
+    <entry>
+        <title>resultSetterViaGit #3 (1 Test schlägt immer noch fehl)</title>
+        <link type="text/html" href="http://localhost:8080/job/resultSetterViaGit/3/" rel="alternate"/>
+        <id>tag:hudson.dev.java.net,2014:resultSetterViaGit:2014-04-24_22-26-03</id>
+        <published>2014-04-24T20:26:03Z</published>
+        <updated>2014-04-24T20:26:03Z</updated>
+    </entry>
+</feed>

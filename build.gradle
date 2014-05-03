@@ -79,6 +79,7 @@ dependencies {
     testCompile group: 'cglib', name: 'cglib-nodep', version: '3.1'
     testCompile group: 'org.apache.camel', name: 'camel-test', version: camelVersion
     testCompile group: 'org.mockito', name: 'mockito-core', version: '1.9.5'
+    testCompile group: 'org.assertj', name: 'assertj-core', version: '1.5.0'
 
     codenarc group:'org.codenarc', name: 'CodeNarc', version: '0.21'
 

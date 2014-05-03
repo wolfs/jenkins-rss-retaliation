@@ -4,6 +4,8 @@ import static com.tngtech.jenkins.notification.model.Result.ABORTED
 import static com.tngtech.jenkins.notification.model.Result.NOT_BUILT
 import static com.tngtech.jenkins.notification.model.Result.SUCCESS
 
+import org.apache.commons.collections.map.UnmodifiableMap
+
 class AllBuildInfos {
     private Map<String, BuildHistory> jobsHistory
     private Set<Result> resultsToIgnore = EnumSet.of(ABORTED, NOT_BUILT)
@@ -27,5 +29,9 @@ class AllBuildInfos {
     @Override
     String toString() {
         "AllBuildInfos{jobsHistory=${jobsHistory}, overallResult=${overallResult}}"
+    }
+
+    Map<String, BuildHistory> getJobsHistory() {
+        UnmodifiableMap.decorate(jobsHistory)
     }
 }
