@@ -55,7 +55,7 @@ public class Bootstrap {
                 default:
                     MissileLauncher.Command direction =
                             MissileLauncher.Command.valueOf(args[0].toUpperCase());
-                    int time = Integer.valueOf(args[1]);
+                    int time = Integer.parseInt(args[1]);
                     getMissileController().move(direction, time);
                     break;
             }
