@@ -29,6 +29,7 @@ public class CamelApplication extends Main {
     private static final String TTS_ENDPOINT = "ttsEndpoint";
     private static final String TRAFFIC_LIGHT_ENDPOINT = "trafficLightEndpoint";
     public static final String BUILD_JOB_STATUS_HOLDER = "buildJobStatusHolder";
+    public static final String DATE_FILTER_BEAN = "dateFilter";
     private Config config;
     private BuildInfoViaRestProvider buildInfoViaRestProvider = new BuildInfoViaRestProvider();
     private AllBuildInfosHolder buildJobsStatusHolder = new AllBuildInfosHolder();
@@ -56,6 +57,7 @@ public class CamelApplication extends Main {
         registry.put(TTS_ENDPOINT, new TtsEndpoint(config.getTts()));
         registry.put(TRAFFIC_LIGHT_ENDPOINT, new TrafficLightEndpoint(config.getTrafficLight()));
         registry.put(BUILD_JOB_STATUS_HOLDER, buildJobsStatusHolder);
+        registry.put(DATE_FILTER_BEAN, new DateFilter(lastUpdate));
 
         init(registry);
 
@@ -92,10 +94,16 @@ public class CamelApplication extends Main {
     RouteBuilder createRoutes() {
         return new RouteBuilder() {
             public void configure() throws Exception {
-                String dateString = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").format(lastUpdate);
-                fromF("atom:%s?splitEntries=true&lastUpdate=%s&sortEntries=true&throttleEntries=false&consumer.delay=%d",
-                        config.getRssFeedUrl(), dateString, config.getPollInterval())
+                fromF("atom:%s?" +
+                                "splitEntries=true&" +
+                                "sortEntries=true&" +
+                                "filter=false&" +
+                                "throttleEntries=false&" +
+                                "consumer.delay=%d",
+                        config.getRssFeedUrl(),
+                        config.getPollInterval())
                         .id("atom")
+                        .filter().method(DATE_FILTER_BEAN)
                         .idempotentConsumer(
                                 simple("${body.id}"),
                                 memoryIdempotentRepository())

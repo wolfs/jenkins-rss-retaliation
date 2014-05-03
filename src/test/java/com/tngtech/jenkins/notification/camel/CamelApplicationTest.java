@@ -57,6 +57,8 @@ public class CamelApplicationTest extends CamelTestSupport {
     @Mock
     private Entry entry;
     @Mock
+    private DateFilter dateFilter;
+    @Mock
     private AllBuildInfosHolder statusHolder;
     @Mock
     private BuildInfoViaRestProvider buildInfoViaRestProvider;
@@ -94,10 +96,12 @@ public class CamelApplicationTest extends CamelTestSupport {
         registry.put("inactiveEndpoint", inactiveEndpoint);
         registry.put(CamelApplication.ENTRY_TO_BUILD_INFO_BEAN, entryToBuildInfo);
         registry.put(CamelApplication.BUILD_JOB_STATUS_HOLDER, statusHolder);
+        registry.put(CamelApplication.DATE_FILTER_BEAN, dateFilter);
 
         given(entry.getId()).willReturn(new IRI(UUID.randomUUID().toString()));
         given(entryToBuildInfo.process(entry)).willReturn(buildInfo);
         given(statusHolder.process(buildInfo)).willReturn(buildHistory);
+        given(dateFilter.isValid(entry)).willReturn(true);
 
         context.getRouteDefinitions().get(0).adviceWith(context, new AdviceWithRouteBuilder() {
             @Override
