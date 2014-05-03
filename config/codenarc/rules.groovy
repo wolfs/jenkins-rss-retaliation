@@ -28,7 +28,9 @@ ruleset {
         'PrintStackTrace' priority: 1
     }
     ruleset('rulesets/naming.xml')
-    ruleset('rulesets/size.xml')
+    ruleset('rulesets/size.xml') {
+        exclude CrapMetric
+    }
     ruleset('rulesets/serialization.xml')
     ruleset('rulesets/unnecessary.xml')
     ruleset('rulesets/unused.xml')
