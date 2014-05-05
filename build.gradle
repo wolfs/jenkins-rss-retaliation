@@ -51,8 +51,8 @@ repositories {
     }
 }
 ext {
-    camelVersion = '2.12.3'
-    groovyVersion = '2.2.1'
+    camelVersion = '2.13.0'
+    groovyVersion = '2.3.0'
 }
 
 tasks.withType(Compile) {
