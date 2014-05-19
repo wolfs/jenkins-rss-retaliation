@@ -9,6 +9,7 @@ import java.util.Date;
 
 public class DateFilter {
     public static final Logger LOG = LoggerFactory.getLogger(DateFilter.class);
+    public static final long MILLIS_IN_HOUR = 60 * 60 * 1000;
 
     private Date referenceDate;
 
@@ -23,6 +24,19 @@ public class DateFilter {
             // never been updated so get published date
             updated = entry.getPublished();
         }
-        return (updated == null || !referenceDate.after(updated));
+
+        if (updated == null) {
+            return true;
+        }
+
+        boolean valid = !referenceDate.after(updated);
+
+        if (valid) {
+            long updatedMillis = updated.getTime();
+            long referenceMillis = referenceDate.getTime();
+            referenceDate = new Date(Math.max(referenceMillis, updatedMillis - MILLIS_IN_HOUR));
+        }
+
+        return valid;
     }
 }
