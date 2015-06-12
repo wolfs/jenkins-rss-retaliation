@@ -55,7 +55,7 @@ ext {
     groovyVersion = '2.3.2'
 }
 
-tasks.withType(Compile) {
+tasks.withType(AbstractCompile) {
     options.encoding = 'UTF-8'
 }
 

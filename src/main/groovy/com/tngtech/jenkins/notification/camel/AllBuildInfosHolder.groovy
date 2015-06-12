@@ -28,7 +28,7 @@ class AllBuildInfosHolder {
     private BuildHistory updateJobsHistory(BuildInfo buildInfo) {
         BuildHistory updatedHistory = getUpdatedHistoryForBuildInfo(buildInfo)
         jobsHistory.put(getKey(buildInfo), updatedHistory)
-        LOG.info('Updated Jobs History to \n{}', jobsHistory.collect { project, history ->
+        LOG.trace('Updated Jobs History to \n{}', jobsHistory.collect { project, history ->
             "${project}: ${history?.currentBuild?.result}"
         }.join('\n'))
         updatedHistory

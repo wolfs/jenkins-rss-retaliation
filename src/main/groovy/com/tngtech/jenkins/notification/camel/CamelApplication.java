@@ -8,13 +8,13 @@ import com.tngtech.jenkins.notification.endpoints.TtsEndpoint;
 import com.tngtech.jenkins.notification.model.BuildInfo;
 import com.tngtech.jenkins.notification.model.Config;
 import org.apache.camel.CamelContext;
+import org.apache.camel.LoggingLevel;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.impl.DefaultCamelContext;
 import org.apache.camel.impl.SimpleRegistry;
 import org.apache.camel.main.Main;
 import org.apache.camel.model.MulticastDefinition;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -112,8 +112,9 @@ public class CamelApplication extends Main {
 
                 MulticastDefinition multicast = from("seda:feeds")
                         .toF("bean:%s", ENTRY_TO_BUILD_INFO_BEAN)
+                        .log(LoggingLevel.INFO, "${body}")
                         .toF("bean:%s", BUILD_JOB_STATUS_HOLDER)
-                        .to("log:com.tngtech.jenkins.notification?showBody=true&multiline=true")
+                        .to("log:com.tngtech.jenkins.notification?showBody=true&multiline=true&level=trace")
                         .multicast();
 
                 List<String> endpoints = new ArrayList<>();
