@@ -19,31 +19,39 @@ class TtsEndpoint extends BaseEndpoint {
     @Override
     void process(BuildHistory buildHistory) throws Exception {
         if (buildHistory.hasResultChanged()) {
-            String text = config.message.call(buildHistory.currentBuild)
+            List<String> text = config.message.call(buildHistory.currentBuild)
             if (text) {
-                LOG.info("Saying: '${text}'")
+                LOG.info("Saying: '${text.join(' ')}'")
                 say(text)
             }
         }
     }
 
-    @SuppressWarnings('BusyWait')
     void say(String text) {
-        URL url = new URL("${GOOGLE_TRANSLATE_TTS}?" +
-                "tl=${config.lang}&" +
-                "q=${URLEncoder.encode(text, Charsets.UTF_8.toString())}")
-        URLConnection urlConn = url.openConnection()
-        urlConn.addRequestProperty('User-Agent',
-                'Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.0)')
-        InputStream audioSrc = urlConn.inputStream
+        say(text.split(/\s/))
+    }
 
+    @SuppressWarnings('BusyWait')
+    void say(List<String> text) {
+        for (String substring : text) {
+            File voiceFile = new File(config.voiceDir, "${substring.trim()}.mp3")
+            if (voiceFile.exists()) {
+                voiceFile.withInputStream(this.&play)
+            } else {
+                URL url = new URL("${GOOGLE_TRANSLATE_TTS}?" +
+                        "tl=${config.lang}&" +
+                        "q=${URLEncoder.encode(substring, Charsets.UTF_8.toString())}")
+                URLConnection urlConn = url.openConnection()
+                urlConn.addRequestProperty('User-Agent',
+                        'Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.0)')
+                urlConn.inputStream.withStream(this.&play)
+            }
+        }
+    }
+
+    private void play(InputStream audioSrc) {
         def player = new Player(new BufferedInputStream(audioSrc))
         player.play()
-
-        while (!player.isComplete()) {
-            sleep(1000)
-        }
-
         player.close()
     }
 }
