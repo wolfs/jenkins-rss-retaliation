@@ -6,6 +6,7 @@ import com.tngtech.jenkins.notification.endpoints.TtsEndpoint;
 import com.tngtech.jenkins.notification.model.Config;
 import com.tngtech.missile.usb.MissileController;
 import com.tngtech.missile.usb.MissileLauncher;
+import org.apache.commons.lang.ArrayUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -46,11 +47,9 @@ public class Bootstrap {
                     break;
                 case "say":
                     TtsEndpoint ttsEndpoint = new TtsEndpoint(config.getTts());
-                    StringBuilder text = new StringBuilder("");
-                    for (int i = 1; i < args.length; i++) {
-                        text.append(" ").append(args[i]);
-                    }
-                    ttsEndpoint.say(text.toString());
+                    List<String> words = new ArrayList<>(Arrays.asList(args));
+                    words.remove(0);
+                    ttsEndpoint.say(words);
                     break;
                 default:
                     MissileLauncher.Command direction =

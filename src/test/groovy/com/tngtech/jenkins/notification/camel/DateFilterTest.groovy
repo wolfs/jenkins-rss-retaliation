@@ -31,6 +31,30 @@ class DateFilterTest extends Specification {
         4          | null       | null     | true
     }
 
+    @Unroll
+    def 'Filter yields #valid for the sequence #seq of millis'(seq, valid) {
+        setup:
+        def filter = new DateFilter(date(0))
+
+        when:
+
+        def lastValid = false
+        seq.each { millis ->
+            def entry = Mock(Entry)
+            entry.updated >> date(millis * 30 * 60 * 1000)
+            lastValid = filter.isValid(entry)
+        }
+
+        then:
+        lastValid == valid
+
+        where:
+        seq         || valid
+        [1, 2, 3]    | true
+        [1, 4, 1]    | false
+        [1, 5, 2, 1] | false
+    }
+
     def date(input) {
         input == null ? null : new Date(input)
     }

@@ -52,10 +52,10 @@ repositories {
 }
 ext {
     camelVersion = '2.13.0'
-    groovyVersion = '2.3.0'
+    groovyVersion = '2.3.2'
 }
 
-tasks.withType(Compile) {
+tasks.withType(AbstractCompile) {
     options.encoding = 'UTF-8'
 }
 
@@ -81,7 +81,7 @@ dependencies {
     testCompile group: 'org.mockito', name: 'mockito-core', version: '1.9.5'
     testCompile group: 'org.assertj', name: 'assertj-core', version: '1.5.0'
 
-    codenarc group:'org.codenarc', name: 'CodeNarc', version: '0.21'
+    codenarc group:'org.codenarc', name: 'CodeNarc', version: '0.24'
 
     findbugs group: 'com.google.code.findbugs', name: 'findbugs', version: '2.0.3'
 }
@@ -129,5 +129,5 @@ publishing {
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '1.12'
+    gradleVersion = '2.7'
 }

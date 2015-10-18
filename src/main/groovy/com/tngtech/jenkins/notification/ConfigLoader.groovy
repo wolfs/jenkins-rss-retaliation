@@ -3,7 +3,6 @@ package com.tngtech.jenkins.notification
 import com.tngtech.jenkins.notification.model.Config
 
 class ConfigLoader {
-
     public static final String CONFIG_LOCATION_SYSTEM_PROPERTY = 'config'
 
     Config load() {
